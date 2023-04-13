@@ -41,6 +41,7 @@ Jorge Rolo
 Sadat Awuma
 Mohamed Shafie  
 Saleem Mustafa
+Shekinah Kimvuidi
 
 ## Version History
 
