@@ -1,45 +1,46 @@
-🅱🆁🅴🆆🅴🅳 🅰🆆🅰🅺🅴🅽🅸🅽🅶
+# 🅱🆁🅴🆆🅴🅳 🅰🆆🅰🅺🅴🅽🅸🅽🅶
 
-## Description
+## Description 
 
-An in-depth paragraph about your project and overview of use.
+An in-depth paragraph about the project and overview of use. <span style="color:Red">TO DO </span>
 
-## Getting Started
 
-### Dependencies
+## Elevator Pitch
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+<span style="color:MediumAquamarine">FOR: </span> SUPER-CAFE COFFEE SHOP<br />
+<span style="color:MediumAquamarine">WHO: </span> Wants to organise their sales data from multiple branches<br />
+<span style="color:MediumAquamarine">THE: </span> Brewed Awakening Project<br />
+<span style="color:MediumAquamarine">IS A: </span> ETL (Export, Transform, Load) Application<br />
+<span style="color:MediumAquamarine">THAT: </span> Performs and allows Super-Cafe to analyse, organise and take control of their data through pipeline cleansing and visualisation.<br />
+<span style="color:MediumAquamarine">UNLIKE: </span> Their old system of using CSVs<br />
+<span style="color:MediumAquamarine">OUR PRODUCT: </span>  Will allow them to make sense of their data and spot trends more efficiently as well as solves the problem of data inconsistencies and inaccuracies.<br />
 
-### Installing
+<br /><br />
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
 
-### Executing program
+### Template for Bullet point list
 
-* How to run the program
-* Step-by-step bullets
+* To use Bullet points is just add an * before the text
+* New lines that start with * will be bullet points
+
+<br /><br />
+
+### Template for Help or Code
+
+Any explanation that needs code snippets should be posted like this.
 ```
-code blocks for commands
+Everything inside the quotes will look like this... will be used for instructions, code etc... 
 ```
 
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+<br /><br />
 
 ## Authors
 
-Contributors names and contact info
-
-Jorge Rolo
-Sadat Awuma
-Mohamed Shafie  
-Saleem Mustafa
-Shekinah Kimvuidi
+* Jorge Rolo
+* Mohamed Shafie
+* Sadat Awuma 
+* Saleem Mustafa
+* Shekinah Kimvuidi
 
 ## Version History
 
@@ -49,15 +50,9 @@ Shekinah Kimvuidi
 * 0.1
     * Initial Release
 
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Special Thanks, Inspiration, code snippets, etc.
+* [Generation UK Program](https://uk.generation.org/)
+* Our Mentors
+* Not Barbara
