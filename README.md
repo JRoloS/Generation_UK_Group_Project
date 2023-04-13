@@ -37,7 +37,8 @@ command to run if program contains helper info
 
 Contributors names and contact info
 
-Jorge Rolo  
+Jorge Rolo
+Sadat Awuma  
 
 
 ## Version History
