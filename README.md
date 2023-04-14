@@ -2,7 +2,19 @@
 
 ## Description 
 
-An in-depth paragraph about the project and overview of use.
+Our client Super-Cafe have experienced unprecedented growth over the last few months and have thus expanded to multiple branches nationwide. 
+
+However with this growth has come alot more sales data inflowing into their systems. 
+
+Their old method of using Comma Seperated Values format for tracking their data is outdated and needs an upgrade to keep up with demand.
+
+This is where the Brewed-Awakening Project comes into play.
+
+Our project by the end of Week 5 will have a finished product in the demo phase, ready to be tested which will fulfill all requirements. 
+
+This product will have core functionality and we will use week 6 to improve and polish the code whilst adding any new non-essential functions. 
+
+By this our client, Super-Cafe, will be able to expertly and efficiently organise their data which will improve sales in the long run leading to further growth internationally.
 
 
 ## Elevator Pitch
