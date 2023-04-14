@@ -1,47 +1,48 @@
-# Project Title
+# 🅱🆁🅴🆆🅴🅳 🅰🆆🅰🅺🅴🅽🅸🅽🅶
 
-Simple overview of use/purpose.
+## Description 
 
-## Description
+An in-depth paragraph about the project and overview of use.
 
-An in-depth paragraph about your project and overview of use.
 
-## Getting Started
+## Elevator Pitch
 
-### Dependencies
+**FOR:** SUPER-CAFE COFFEE SHOP<br />
+**WHO:** Wants to organise their sales data from multiple branches<br />
+**THE:** Brewed Awakening Project<br />
+**IS A:** ETL (Export, Transform, Load) Application<br />
+**THAT:** Performs and allows Super-Cafe to analyse, organise and take control of their data through pipeline cleansing and visualisation.<br />
+**UNLIKE:** Their old system of using CSVs<br />
+**OUR PRODUCT:** Will allow them to make sense of their data and spot trends more efficiently as well as solves the problem of data inconsistencies and inaccuracies.<br />
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+<br /><br />
 
-### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+### Template for Bullet point list
 
-### Executing program
+* To use Bullet points is just add an * before the text
+* New lines that start with * will be bullet points
 
-* How to run the program
-* Step-by-step bullets
+<br /><br />
+
+### Template for Help or Code
+
+Any explanation that needs code snippets should be posted like this.
 ```
-code blocks for commands
+Everything inside the quotes will look like this... will be used for instructions, code etc... 
 ```
 
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+<br />
 
 ## Authors
 
-Contributors names and contact info
+* Jorge Rolo
+* Mohamed Shafie
+* Sadat Awuma 
+* Saleem Mustafa
+* Shekinah Kimvuidi
 
-Jorge Rolo
-Sadat Awuma
-Mohamed Shafie  
-Saleem Mustafa
-Shekinah Kimvuidi
+<br />
 
 ## Version History
 
@@ -51,15 +52,11 @@ Shekinah Kimvuidi
 * 0.1
     * Initial Release
 
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+<br />
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Special Thanks, Inspiration, code snippets, etc.
+* [Generation UK Program](https://uk.generation.org/)
+* Our Mentors
+* Not Barbara
