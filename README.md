@@ -2,18 +2,18 @@
 
 ## Description 
 
-An in-depth paragraph about the project and overview of use. <span style="color:Red">TO DO </span>
+An in-depth paragraph about the project and overview of use.
 
 
 ## Elevator Pitch
 
-<span style="color:MediumAquamarine">FOR: </span> SUPER-CAFE COFFEE SHOP<br />
-<span style="color:MediumAquamarine">WHO: </span> Wants to organise their sales data from multiple branches<br />
-<span style="color:MediumAquamarine">THE: </span> Brewed Awakening Project<br />
-<span style="color:MediumAquamarine">IS A: </span> ETL (Export, Transform, Load) Application<br />
-<span style="color:MediumAquamarine">THAT: </span> Performs and allows Super-Cafe to analyse, organise and take control of their data through pipeline cleansing and visualisation.<br />
-<span style="color:MediumAquamarine">UNLIKE: </span> Their old system of using CSVs<br />
-<span style="color:MediumAquamarine">OUR PRODUCT: </span>  Will allow them to make sense of their data and spot trends more efficiently as well as solves the problem of data inconsistencies and inaccuracies.<br />
+**FOR:** SUPER-CAFE COFFEE SHOP<br />
+**WHO:** Wants to organise their sales data from multiple branches<br />
+**THE:** Brewed Awakening Project<br />
+**IS A:** ETL (Export, Transform, Load) Application<br />
+**THAT:** Performs and allows Super-Cafe to analyse, organise and take control of their data through pipeline cleansing and visualisation.<br />
+**UNLIKE:** Their old system of using CSVs<br />
+**OUR PRODUCT:** Will allow them to make sense of their data and spot trends more efficiently as well as solves the problem of data inconsistencies and inaccuracies.<br />
 
 <br /><br />
 
@@ -32,7 +32,7 @@ Any explanation that needs code snippets should be posted like this.
 Everything inside the quotes will look like this... will be used for instructions, code etc... 
 ```
 
-<br /><br />
+<br />
 
 ## Authors
 
@@ -42,6 +42,8 @@ Everything inside the quotes will look like this... will be used for instruction
 * Saleem Mustafa
 * Shekinah Kimvuidi
 
+<br />
+
 ## Version History
 
 * 0.2
@@ -49,6 +51,8 @@ Everything inside the quotes will look like this... will be used for instruction
     * See [commit change]() or See [release history]()
 * 0.1
     * Initial Release
+
+<br />
 
 ## Acknowledgments
 
