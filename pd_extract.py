@@ -1,12 +1,13 @@
 import pandas as pd
-from ..handouts.sql_utils import setup_db_connection, create_db_tables, create_engine_for_load_step
-
 
 ### EXTRACT
 
-# 1. Read the sales_data.csv
+# 1. Read CSV
 df = pd.read_csv('chesterfield_25-08-2021_09-00-00.csv')
 
+df = df.drop(columns=['full_name', 'card_number'])
+
+print(df.head())
 
 ### TRANSFORM
 
@@ -32,12 +33,3 @@ df = pd.read_csv('chesterfield_25-08-2021_09-00-00.csv')
 #     .drop(columns=['purchase_amount'])
 
 ## LOAD
-
-engine = create_engine_for_load_step()
-connection, cursor = setup_db_connection()
-create_db_tables(connection, cursor)
-
-# 7. Load the transformed data to the created tables
-df.to_sql('sales_data', engine, index=False, if_exists='replace')
-customer_spend.to_sql('customer_spend', engine, index=False, if_exists='replace')
-customer_products.to_sql('customer_products', engine, index=False, if_exists='replace')
