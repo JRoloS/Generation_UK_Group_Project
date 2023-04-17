@@ -3,11 +3,16 @@ import pandas as pd
 ### EXTRACT
 
 # 1. Read CSV
-df = pd.read_csv('chesterfield_25-08-2021_09-00-00.csv')
 
-df = df.drop(columns=['full_name', 'card_number'])
+def extract_sanitise_csv(csv):
+    try:
+        columns = ['date_time', 'Location', 'full_name', 'order', 'amount', 'payment_type', 'card_number']
+        df = pd.read_csv(csv, header=None, names=columns)
+        df = df.drop(columns=['full_name', 'card_number'])
+    except FileNotFoundError as fnfe:
+        print(f'File not found: {fnfe}') 
 
-print(df.head())
+
 
 ### TRANSFORM
 
