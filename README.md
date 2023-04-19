@@ -1,7 +1,10 @@
 # 🅱🆁🅴🆆🅴🅳 🅰🆆🅰🅺🅴🅽🅸🅽🅶
 
+<p align="center"><img src="Documentation/logo.png" width="175" height="175" /></p>
+
 ## Description 
 
+<div style="text-align: justify">
 Introducing the Brewed-Awakening Project - an innovative solution that will revolutionize the way Super-Cafe manages its sales data.
 
 As Super-Cafe continues to expand across the country, their sales data has been increasing exponentially, leading to an urgent need for an efficient and effective data management system. The current system of using Comma Separated Values format for tracking data has become outdated and unreliable, leading to a lot of manual work and errors.
@@ -9,7 +12,7 @@ As Super-Cafe continues to expand across the country, their sales data has been 
 With the Brewed-Awakening Project, our team will be creating a state-of-the-art software solution that will meet all of Super-Cafe's data management needs. We aim to deliver a fully functional product by the end of Week 5 that will be ready for testing. Our software will feature core functionality that will help Super-Cafe expertly and efficiently organize its data, leading to improved sales in the long run.
 
 During Week 6, we will focus on refining and polishing the code while adding any new non-essential functions. Our ultimate goal is to provide Super-Cafe with a comprehensive solution that is easy to use and maintain, so they can focus on growing their business domestically and internationally. With our software in place, Super-Cafe will have a competitive edge over its competitors, allowing it to dominate the market and become a leader in the industry.
-
+</div>
 
 <!-- Our client Super-Cafe have experienced unprecedented growth over the last few months and have thus expanded to multiple branches nationwide. 
 However with this growth has come a fair amount of sales data inflowing into their systems. 
@@ -61,8 +64,8 @@ Everything inside the quotes will look like this... will be used for instruction
 
 ## Version History
 
-* 0.11
-    * Jupyter Notebook with local CSV functions added
+* 0.1.01
+    * Jupyter Notebook with local CSV handling functions added
 * 0.1
     * Initial Release
 
