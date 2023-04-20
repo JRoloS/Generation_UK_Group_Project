@@ -130,5 +130,5 @@ dmypy.json
 
 
 # Folders to Ignore
-raw_data/
+#raw_data/
 results/
