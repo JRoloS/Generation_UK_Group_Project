@@ -1,3 +1,5 @@
+# This compose file will spin up the docker environment required to use the database gui:
+
 version: '3.8'
 services :
   db:
