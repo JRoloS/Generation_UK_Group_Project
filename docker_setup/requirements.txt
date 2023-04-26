@@ -1,3 +1,4 @@
+This file is to download all necessary modules to run our program:
 
 cryptography==39.0.1
 pycparser==2.20
