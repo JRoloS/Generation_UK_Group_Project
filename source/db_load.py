@@ -1,6 +1,25 @@
 import psycopg2
+import pandas as pd
 import os
+import csv
 from dotenv import load_dotenv
+
+#-----------------------------------------------------------------
+
+# Function used to always get the absolute path of the raw csv file from the raw_data folder and turn into a variable:
+
+def absolute_path_for_raw_data(raw_data_file):
+    abspath = os.path.abspath("./raw_data")
+    csv_file = abspath + "\\" + raw_data_file
+    return csv_file
+
+raw_data_file = "leeds_01-01-2020_09-00-00.csv"
+
+csv_file = absolute_path_for_raw_data(raw_data_file)
+    
+#------------------------------------------------------------------
+
+# Function to establish connection to the database
 
 load_dotenv('docker_setup/.env')
 host = os.environ.get("sql_host")
@@ -28,7 +47,7 @@ connection = setup_db_connection()
 
 conn_cursor = connection.cursor()
 
-conn_cursor.execute("SELECT * FROM products")
+#conn_cursor.execute("SELECT * FROM products")
 
 #connection.commit()
 
@@ -38,6 +57,8 @@ conn_cursor.execute("SELECT * FROM products")
 # connection.close()
 
 #--------------------------------------------------------------------
+
+# test database function to iterate thorugh a simple dictionary to upload to products table in database:
 
 test_prods = {
     'Test':5.5,
@@ -102,18 +123,18 @@ WithDB.select_db("*", "products")
 #--------------------------------------------------------------------------------------------
 
 # A row example.... edit for one value if it fails so you can check how it works
-row = ['Chesterfield','Richard Copeland', "Regular Flavoured iced latte - Hazelnut - 2.75, Large Latte - 2.45", 5.20, 'CARD', 5494173772652516]
+row = ['25/08/2021 09:00', 'Chesterfield', 'Richard Copeland', "Regular Flavoured iced latte - Hazelnut - 2.75, Large Latte - 2.45", 5.20, 'CARD', 5494173772652516]
 # the target table 
 table = "raw_data"
 #your table db columns  
-columns = 'location,full_name,orders,transaction_total,payment_type,card_number'
+columns = 'date_time, location, full_name, orders, transaction_total, payment_type, card_number'
 
 
-print(type(columns))
+#print(type(columns))
 
 class WithDB():
 
-    def insert_db(row, table, columns):
+    def insert_db(row):
             
             try:
                 print("Connecting to DataBase...")
@@ -136,7 +157,7 @@ class WithDB():
                     #sql = f"INSERT INTO {table} {columns} VALUES (%s, %s, %s, %s, %s, %s)"
                     #values = columns
                     
-                    cursor.execute("INSERT INTO raw_data VALUES (%s, %s, %s, %s, %s, %s)", row)  # correct
+                    cursor.execute("INSERT INTO raw_data VALUES (%s, %s, %s, %s, %s, %s, %s)", row)  # correct
 
                     #cursor.execute(sql,values)
                     # table_data = cursor.fetchall()
@@ -146,4 +167,22 @@ class WithDB():
             except Exception as ex:
                 print(f"Failed to open connection, please make sure DB is Running: {ex}")
 
-WithDB.insert_db(row, table, columns)
+#WithDB.insert_db(csv_list)
+
+#----------------------------------------------------------------
+
+
+
+def load_csv_to_raw_db(csv_file):
+    with open(csv_file, "r") as file:
+        try:
+            csv_file = csv.reader(file)
+            for row in csv_file:
+                WithDB.insert_db(row)
+        except Exception as e:
+            print(f"{e}")
+            
+load_csv_to_raw_db(csv_file)
+            
+
+    
