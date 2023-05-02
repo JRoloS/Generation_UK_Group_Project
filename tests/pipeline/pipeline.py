@@ -1,5 +1,4 @@
 # SYSTEMATIC HIERARCHY INTENDED TRANSFORMATION 
-# ---->  or how I prefer to call it: The S.H.I.T.
 
 # IMPORTS
 
@@ -47,4 +46,5 @@ df = sort_time_to_postgre_format(df)
 # (4) Replace Location with Dictionary ones, Add location to the Dictionary if it is a new one
 
 
-print(df)
+print(df.head())
+
