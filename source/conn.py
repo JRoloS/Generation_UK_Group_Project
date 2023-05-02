@@ -1,5 +1,46 @@
+import psycopg2
 import pandas as pd
-import json
+import os
+from dotenv import load_dotenv
+
+def absolute_path_for_raw_data(raw_data_file):
+    abspath = os.path.abspath("./raw_data")
+    csv_file = abspath + "\\" + raw_data_file
+    return csv_file
+
+raw_data_file = "chesterfield_25-08-2021_09-00-00.csv"
+
+raw_csv = absolute_path_for_raw_data(raw_data_file)
+
+#--------------------------------------------------------
+
+load_dotenv('docker_setup/.env')
+host = os.environ.get("sql_host")
+user = os.environ.get("sql_user")
+password = os.environ.get("sql_pass")
+database = os.environ.get("sql_db")
+port = os.environ.get("sql_port")
+
+def setup_db_connection(host=host, 
+                        user=user, 
+                        password=password,
+                        db=database,
+                        port=port):
+    
+    print("Connecting to database....")
+    conn = psycopg2.connect(
+        host = host,
+        database = db,
+        user = user,
+        password = password,
+        port = port
+    )
+    print("Connection established.")
+    return conn
+
+conn = setup_db_connection()
+
+#-------------------------------------------------------------------------------------------
 
 #Read and sanitise raw csv
 def read_sanitise_csv(raw_csv):
@@ -12,10 +53,10 @@ def read_sanitise_csv(raw_csv):
         print(f'File not found: {fnfe}')
 
     return sanitised_df
-        
 
 df = read_sanitise_csv(raw_csv)
-        
+ 
+#-----------------------------------------------------------------------------------------------        
 
 def update_location_table(conn, sanitised_data):
     # Extract the unique location names from the raw data
@@ -39,56 +80,6 @@ def update_location_table(conn, sanitised_data):
     # Commit the changes
     conn.commit()
 
+#print(update_location_table(conn, df))
 
-print(update_location_table(conn, df))
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # for location in df['location'].unique():
-    #     if location not in location_dict:
-            
-    #         new_location = df.iloc[0].iat[1]
-            
-    #         if  max(location_dict.values()) == "0":
-    #             next_num = 0
-            
-    #         else:     
-    #             next_num = max(location_dict.values()) + 1
-            
-    #         location_dict[new_location] = next_num
-            
-    #     df['location'] = df['location'].replace(location_dict)
-        
-
-
-#Normalise orders_products
-
-
-
-#Normalise products
-
-
-
-#Normalise payment_types
-
-
-#Normalise orders
-#def normalise_orders(raw_csv):
-# Select locations and switch locations with ID
-
-
-# Test -----------------------------------
-
-# df = read_sanitise_csv('chesterfield_25-08-2021_09-00-00.csv')
-# location_df = normalise_location(df)
-# print(location_df.head())
+#-------------------------------------------------------------------------------------

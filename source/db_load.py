@@ -41,11 +41,14 @@ def setup_db_connection(host=host,
         password = password,
         port = port
     )
+    print("connection established")
     return conn
 
-connection = setup_db_connection()
+conn = setup_db_connection()
 
-conn_cursor = connection.cursor()
+setup_db_connection()
+
+conn_cursor = conn.cursor()
 
 #conn_cursor.execute("SELECT * FROM products")
 
@@ -69,56 +72,46 @@ test_prods = {
 def insert_into_product_db():
     try:
         for product, price in test_prods.items():
-            cursor = connection.cursor()
+            cursor = conn.cursor()
             sql = "INSERT INTO products (product_name, product_price) VALUES (%s,%s) RETURNING product_id"
             cursor.execute(sql, (product, price))
-            connection.commit()
+            conn.commit()
             
             
     except Exception as e:
         print(f'Failed to open connection: {e}')
         
-#insert_into_product_db()
+# #insert_into_product_db()
 
-conn_cursor.close()
-connection.close()
+# conn_cursor.close()
+# connection.close()
 
 #-------------------------------------------------------
 
-class WithDB():
-
 # SELECT [SQL] (2 arguments, SELECT = "*" TABLE = "table_name")
 
-    def select_db(select, table):
-        
-        try:
-            print("Connecting to DataBase...")
-            host_name = "localhost"
-            database_name = "group_project"
-            user_name = "brewed"
-            user_password = "awakening"
-            port="5432"
-
-            with psycopg2.connect(
-                        host = host_name,
-                        database = database_name,
-                        user = user_name,
-                        password = user_password,
-                        port = port
-                    ) as connection:
-            
-                cursor = connection.cursor()
-                
-                sql = f"SELECT {select} FROM {table}"
-                cursor.execute(sql)
-                table_data = cursor.fetchall()
-                print(table_data)
-                connection.commit()
-        
-        except Exception as ex:
-            print(f"Failed to open connection, please make sure DB is Running: {ex}")
+def select_db(select, table):
     
-WithDB.select_db("*", "products")
+    try:
+        print("Connecting to DataBase...")
+        print(f"Selecting {select} from {table}.....")
+
+        cursor = conn.cursor()
+        
+        sql = f"SELECT {select} FROM {table}"
+        cursor.execute(sql)
+        table_data = cursor.fetchall()
+        return table_data
+        
+    except Exception as ex:
+        print(f"Failed to open connection, please make sure DB is Running: {ex}")
+
+
+    
+#select_db("*", "locations")
+
+# locations_list = WithDB.select_db("*", "locations")
+# print(type(locations_list))
 
 #--------------------------------------------------------------------------------------------
 
@@ -132,57 +125,69 @@ columns = 'date_time, location, full_name, orders, transaction_total, payment_ty
 
 #print(type(columns))
 
-class WithDB():
 
-    def insert_db(row):
-            
-            try:
-                print("Connecting to DataBase...")
-                host_name = "localhost"
-                database_name = "group_project"
-                user_name = "brewed"
-                user_password = "awakening"
-                port="5432"
-                
-                with psycopg2.connect(
-                            host = host_name,
-                            database = database_name,
-                            user = user_name,
-                            password = user_password,
-                            port = port
-                        ) as connection:
-                
-                    cursor = connection.cursor()
-                    
-                    #sql = f"INSERT INTO {table} {columns} VALUES (%s, %s, %s, %s, %s, %s)"
-                    #values = columns
-                    
-                    cursor.execute("INSERT INTO raw_data VALUES (%s, %s, %s, %s, %s, %s, %s)", row)  # correct
 
-                    #cursor.execute(sql,values)
-                    # table_data = cursor.fetchall()
-                    # print(table_data)
-                    connection.commit()
+def insert_db(row):
+        
+        try:
+            print("Connecting to DataBase...")
+            host_name = "localhost"
+            database_name = "group_project"
+            user_name = "brewed"
+            user_password = "awakening"
+            port="5432"
             
-            except Exception as ex:
-                print(f"Failed to open connection, please make sure DB is Running: {ex}")
+            with psycopg2.connect(
+                        host = host_name,
+                        database = database_name,
+                        user = user_name,
+                        password = user_password,
+                        port = port
+                    ) as connection:
+            
+                cursor = connection.cursor()
+                
+                #sql = f"INSERT INTO {table} {columns} VALUES (%s, %s, %s, %s, %s, %s)"
+                #values = columns
+                
+                cursor.execute("INSERT INTO raw_data VALUES (%s, %s, %s, %s, %s, %s, %s)", row)  # correct
+
+                #cursor.execute(sql,values)
+                # table_data = cursor.fetchall()
+                # print(table_data)
+                connection.commit()
+        
+        except Exception as ex:
+            print(f"Failed to open connection, please make sure DB is Running: {ex}")
 
 #WithDB.insert_db(csv_list)
 
 #----------------------------------------------------------------
-
-
 
 def load_csv_to_raw_db(csv_file):
     with open(csv_file, "r") as file:
         try:
             csv_file = csv.reader(file)
             for row in csv_file:
-                WithDB.insert_db(row)
+                insert_db(row)
         except Exception as e:
             print(f"{e}")
             
-load_csv_to_raw_db(csv_file)
-            
+# load_csv_to_raw_db(csv_file)
 
-    
+#--------------------------------------------------------------------------
+            
+#Read and sanitise raw csv
+def read_sanitise_csv(raw_csv):
+    try:
+        columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
+        df = pd.read_csv(raw_csv, header=None, names=columns)
+        sanitised_df = df.drop(columns=['full_name', 'card_number'])
+
+    except FileNotFoundError as fnfe:
+        print(f'File not found: {fnfe}')
+
+    return sanitised_df
+
+
+        
