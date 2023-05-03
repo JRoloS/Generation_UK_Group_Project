@@ -216,4 +216,43 @@ split_prices_per_product(df)
 # Return ID
 # Use associated price from  
 
+
+# Possible implementation for updating Orders_products table
+
+def update_order_product_table(sanitised_df, conn):
+    # Create a cursor object
+    cur = conn.cursor()
+    
+    # Get the product names and their associated ids from the "products" table
+    cur.execute("SELECT product_name, product_id FROM products")
+    product_id_dict = dict(cur.fetchall())
+    
+    # Iterate through each order in the dataframe and insert its products into the "orders_products" table
+    for i, order in sanitised_df.iterrows():
+        # Split the order string into a list of individual product strings
+        products = order['order'].split(', ')
+        
+        # Assign an order_id to this order
+        order_id = i + 1
+        
+        # Iterate through each product in this order and insert it into the "orders_products" table
+        for product in products:
+            # Split the product string into its name, flavour (if present), and price components
+            product_components = product.split(' - ')
+            product_name = product_components[0].strip()
+            if len(product_components) == 3:
+                product_name += ' - ' + product_components[1].strip()
+            product_price = float(product_components[-1].strip())
+            
+            # Get the product_id for this product from the "products" table
+            product_id = product_id_dict[product_name]
+            
+            # Insert the order_id, product_id, and product_price into the "orders_products" table
+            cur.execute("INSERT INTO orders_products (order_id, product_id, product_price) VALUES (%s, %s, %s)", (order_id, product_id, product_price))
+    
+    # Commit the changes and close the cursor
+    conn.commit()
+    cur.close()
+
+
      
