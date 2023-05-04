@@ -46,6 +46,30 @@ conn = setup_db_connection()
 #-------------------------------------------------------------------------------------------
 
 #Read and sanitise raw csv
+
+# ****DROPS [FULL_NAME], [ORDER] AND [CARD_NUMBER] ONLY
+
+def read_sanitise_csv(raw_csv):
+    try:
+        columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
+        df = pd.read_csv(raw_csv, header=None, names=columns)
+        sanitised_df = df.drop(columns=['full_name', 'order', 'card_number'])
+
+    except FileNotFoundError as fnfe:
+        print(f'File not found: {fnfe}')
+
+    return sanitised_df
+
+df = read_sanitise_csv(raw_csv)
+
+print(df)
+
+#---------------------------------------------------------------------------------------
+
+#Read and sanitise raw csv
+
+# ****DROPS [FULL_NAME] AND [CARD_NUMBER] ONLY
+
 def read_sanitise_csv(raw_csv):
     try:
         columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
@@ -58,6 +82,7 @@ def read_sanitise_csv(raw_csv):
     return sanitised_df
 
 df = read_sanitise_csv(raw_csv)
+
  
 #-----------------------------------------------------------------------------------------------        
 
@@ -81,7 +106,7 @@ def update_locations(sanitised_df, conn):
     conn.commit()
     cur.close()
 
-update_locations(df, conn)
+#update_locations(df, conn)
 
 #-------------------------------------------------------------------------------------
 
@@ -105,7 +130,7 @@ def update_payment_types(sanitised_df, conn):
     conn.commit()
     cur.close()
 
-update_payment_types(df, conn)
+#update_payment_types(df, conn)
 
 #---------------------------------------------------------
 
@@ -135,7 +160,7 @@ def update_product_table(sanitised_df, conn):
     # Close the cursor
     cursor.close()
 
-update_product_table(df, conn)
+#update_product_table(df, conn)
 
 #------------------------------------------------------------------------------------------
 
@@ -173,3 +198,25 @@ def update_order_product_table(sanitised_df, conn):
     cur.close()
 
 #update_order_product_table(df, conn)
+
+#-------------------------------------------------------------------------------------------
+
+#Read and sanitise raw csv
+
+# ****DROPS [FULL_NAME], [ORDER] AND [CARD_NUMBER] ONLY
+
+def read_sanitise_csv(raw_csv):
+    try:
+        columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
+        df = pd.read_csv(raw_csv, header=None, names=columns)
+        sanitised_df = df.drop(columns=['full_name', 'order', 'card_number'])
+
+    except FileNotFoundError as fnfe:
+        print(f'File not found: {fnfe}')
+
+    return sanitised_df
+
+df = read_sanitise_csv(raw_csv)
+
+print(df)
+
