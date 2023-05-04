@@ -1,7 +1,6 @@
 import psycopg2
 import pandas as pd
 import os
-import json
 from dotenv import load_dotenv
 
 #---------------------------------------------------------------
@@ -12,6 +11,7 @@ def absolute_path_for_raw_data(raw_data_file):
     return csv_file
 
 raw_data_file = "chesterfield_25-08-2021_09-00-00.csv"
+#raw_data_file = "leeds_01-01-2020_09-00-00.csv"
 
 raw_csv = absolute_path_for_raw_data(raw_data_file)
 
@@ -61,38 +61,12 @@ df = read_sanitise_csv(raw_csv)
  
 #-----------------------------------------------------------------------------------------------        
 
-# def update_location_table(conn, sanitised_data):
-#     # Extract the unique location names from the raw data
-#     unique_locations = sanitised_data['location'].unique()
-
-#     # Check if each location exists in the database, and insert it if it doesn't
-#     for location_name in unique_locations:
-#         # Check if the location already exists in the database
-#         with conn.cursor() as cur:
-#             cur.execute('SELECT location_id FROM locations WHERE location_name=%s', (location_name,))
-#             row = cur.fetchone()
-
-#         # If the location doesn't exist, insert it and get the new ID
-#         if row is None:
-#             with conn.cursor() as cur:
-#                 cur.execute('INSERT INTO locations (location_name) VALUES (%s) RETURNING location_id', (location_name,))
-#                 location_id = cur.fetchone()[0]
-#         else:
-#             location_id = row[0]
-
-#     # Commit the changes
-#     conn.commit()
-
-#print(update_location_table(conn, df))
-
-#-------------------------------------------------------------------------------------
-
-def update_locations(sanitized_df, conn):
+def update_locations(sanitised_df, conn):
     # Create a cursor to interact with the database
     cur = conn.cursor()
 
     # Get the distinct location names from the sanitized dataframe
-    location_names = sanitized_df['location'].unique()
+    location_names = sanitised_df['location'].unique()
 
     # Check each location name against the locations table in the database
     for name in location_names:
@@ -107,16 +81,16 @@ def update_locations(sanitized_df, conn):
     conn.commit()
     cur.close()
 
-#update_locations(df, conn)
+update_locations(df, conn)
 
 #-------------------------------------------------------------------------------------
 
-def update_payment_types(sanitized_df, conn):
+def update_payment_types(sanitised_df, conn):
     # Create a cursor to interact with the database
     cur = conn.cursor()
 
     # Get the distinct payment names from the sanitized dataframe
-    payment_types = sanitized_df['payment_type'].unique()
+    payment_types = sanitised_df['payment_type'].unique()
 
     # Check each payment name against the payment_type table in the database
     for name in payment_types:
@@ -131,37 +105,7 @@ def update_payment_types(sanitized_df, conn):
     conn.commit()
     cur.close()
 
-#update_payment_types(df, conn)
-
-#---------------------------------------------------------------------
-
-# def split_products_from_order(sanitized_df):
-#     product_list = []
-#     for i, order in enumerate(df['order']):
-#         order_split = order.split(', ')
-#         product_dict = {}
-#         for item in order_split:
-#             item_split = item.split(' - ')
-#             product = item_split[0].strip() + item_split[1].strip()
-#             price = item_split[-1]
-#             product_dict[product] = price
-#         product_list.append(product_dict)
-#     #return product_list
-    
-#     print(product_list)
-    
-# split_products_from_order(df)
-
-#-------------------------------------------------------------------------------------
-
-
-# def seperate_products_list(product_list):
-#     for products in product_list:
-#         print(products)
-#         #for product_name, product_price in products.items():
-            
-            
-# seperate_products_list(split_products_from_order(df))
+update_payment_types(df, conn)
 
 #---------------------------------------------------------
 
@@ -191,68 +135,41 @@ def update_product_table(sanitised_df, conn):
     # Close the cursor
     cursor.close()
 
-#update_product_table(df, conn)
+update_product_table(df, conn)
 
-#---------------------------------------------------------
-
-def split_prices_per_product(sanitised_df):
-
-    for index, row in sanitised_df.iterrows():
-            order_string = row['order']
-            # Split the order string into individual orders
-            orders = order_string.split(', ')
-            # Iterate over each order
-            for order in orders:
-                    product_price = order.split(' - ')[-1].strip()
-        
-            print(product_price)
-
-
-split_prices_per_product(df)  
-
-# Go through CSV[orders] again
-# create a new order
-# split string again and match product name to ID in products table
-# Return ID
-# Use associated price from  
-
-
-# Possible implementation for updating Orders_products table
+#------------------------------------------------------------------------------------------
 
 def update_order_product_table(sanitised_df, conn):
     # Create a cursor object
     cur = conn.cursor()
-    
+    # Get the current max order_id in the "orders_products" table
+    cur.execute("SELECT MAX(order_id) FROM orders_products")
+    max_order_id = cur.fetchone()[0]
+    if max_order_id is None:
+        max_order_id = 0
     # Get the product names and their associated ids from the "products" table
     cur.execute("SELECT product_name, product_id FROM products")
     product_id_dict = dict(cur.fetchall())
-    
     # Iterate through each order in the dataframe and insert its products into the "orders_products" table
     for i, order in sanitised_df.iterrows():
         # Split the order string into a list of individual product strings
         products = order['order'].split(', ')
-        
         # Assign an order_id to this order
-        order_id = i + 1
-        
+        order_id = max_order_id + i + 1
         # Iterate through each product in this order and insert it into the "orders_products" table
-        for product in products:
+        for j, product in enumerate(products):
             # Split the product string into its name, flavour (if present), and price components
             product_components = product.split(' - ')
-            product_name = product_components[0].strip()
+            product_name = product_components[0]
             if len(product_components) == 3:
-                product_name += ' - ' + product_components[1].strip()
-            product_price = float(product_components[-1].strip())
-            
+                product_name += ' - ' + product_components[1]
+            product_price = float(product_components[-1])
             # Get the product_id for this product from the "products" table
             product_id = product_id_dict[product_name]
-            
             # Insert the order_id, product_id, and product_price into the "orders_products" table
             cur.execute("INSERT INTO orders_products (order_id, product_id, product_price) VALUES (%s, %s, %s)", (order_id, product_id, product_price))
-    
     # Commit the changes and close the cursor
     conn.commit()
     cur.close()
 
-
-     
+#update_order_product_table(df, conn)
