@@ -39,6 +39,8 @@ def setup_db_connection(host=host,
         port = port
     )
     print("Connection established.")
+    print("Processing request...")
+    print("Request completed.")
     return conn
 
 conn = setup_db_connection()
@@ -91,7 +93,11 @@ def update_locations(sanitised_df, conn):
         if result is None:
             cur.execute("INSERT INTO locations (location_name) VALUES (%s) RETURNING location_id", (name,))
             location_id = cur.fetchone()[0]
-            sanitised_df.loc[sanitised_df['location'] == name, 'location'] = location_id
+        else:
+            location_id = result[0]
+            
+        sanitised_df.loc[sanitised_df['location'] == name, 'location'] = location_id
+        
 
     # Commit the changes to the database and close the cursor
     conn.commit()
