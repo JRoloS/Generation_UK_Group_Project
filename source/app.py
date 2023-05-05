@@ -10,8 +10,8 @@ def absolute_path_for_raw_data(raw_data_file):
     csv_file = abspath + "\\" + raw_data_file
     return csv_file
 
-raw_data_file = "chesterfield_25-08-2021_09-00-00.csv"
-#raw_data_file = "leeds_01-01-2020_09-00-00.csv"
+#raw_data_file = "chesterfield_25-08-2021_09-00-00.csv"
+raw_data_file = "leeds_01-01-2020_09-00-00.csv"
 
 raw_csv = absolute_path_for_raw_data(raw_data_file)
 
@@ -49,7 +49,7 @@ conn = setup_db_connection()
 
 # ****DROPS [FULL_NAME], [ORDER] AND [CARD_NUMBER] ONLY
 
-def read_sanitise_csv(raw_csv):
+def sanitise_csv_order_table(raw_csv):
     try:
         columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
         df = pd.read_csv(raw_csv, header=None, names=columns)
@@ -60,30 +60,19 @@ def read_sanitise_csv(raw_csv):
 
     return sanitised_df
 
-df = read_sanitise_csv(raw_csv)
+order_table_df = sanitise_csv_order_table(raw_csv)
 
-print(df)
+#print(df)
 
-#---------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
 
-#Read and sanitise raw csv
+def sort_time_to_postgre_format(df):
+    df['date_time'] = pd.to_datetime(df['date_time'], dayfirst=True)
+    
+    return df
 
-# ****DROPS [FULL_NAME] AND [CARD_NUMBER] ONLY
+sorted_datetime_df = sort_time_to_postgre_format(order_table_df)
 
-def read_sanitise_csv(raw_csv):
-    try:
-        columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
-        df = pd.read_csv(raw_csv, header=None, names=columns)
-        sanitised_df = df.drop(columns=['full_name', 'card_number'])
-
-    except FileNotFoundError as fnfe:
-        print(f'File not found: {fnfe}')
-
-    return sanitised_df
-
-df = read_sanitise_csv(raw_csv)
-
- 
 #-----------------------------------------------------------------------------------------------        
 
 def update_locations(sanitised_df, conn):
@@ -95,18 +84,21 @@ def update_locations(sanitised_df, conn):
 
     # Check each location name against the locations table in the database
     for name in location_names:
-        cur.execute("SELECT * FROM locations WHERE location_name = %s", (name,))
+        cur.execute("SELECT location_id FROM locations WHERE location_name = %s", (name,))
         result = cur.fetchone()
 
-        # If the location name is not in the table, insert it
+        # If the location name is not in the table, insert it and update the associated column within the dataframe with the returned location_id
         if result is None:
             cur.execute("INSERT INTO locations (location_name) VALUES (%s) RETURNING location_id", (name,))
+            location_id = cur.fetchone()[0]
+            sanitised_df.loc[sanitised_df['location'] == name, 'location'] = location_id
 
     # Commit the changes to the database and close the cursor
     conn.commit()
     cur.close()
-
-#update_locations(df, conn)
+    return sanitised_df
+    
+normalised_location_df = update_locations(sorted_datetime_df, conn)
 
 #-------------------------------------------------------------------------------------
 
@@ -125,14 +117,66 @@ def update_payment_types(sanitised_df, conn):
         # If the payment name is not in the table, insert it
         if result is None:
             cur.execute("INSERT INTO payment_types (payment_name) VALUES (%s) RETURNING payment_type_id", (name,))
+            payment_type_id = cur.fetchone()[0]
+        else:
+            payment_type_id = result[0]
+
+        # Update the payment_type column in the dataframe with the payment_type_id
+        sanitised_df.loc[sanitised_df['payment_type'] == name, 'payment_type'] = payment_type_id
 
     # Commit the changes to the database and close the cursor
     conn.commit()
     cur.close()
+    return sanitised_df
+    
 
-#update_payment_types(df, conn)
+normalised_payment_type_df = update_payment_types(normalised_location_df, conn)
+#print(normalised_payment_type_df)
 
-#---------------------------------------------------------
+#------------------------------------------------------------------------------
+
+def update_orders_table(sanitised_df, conn):
+    # Create a cursor object to interact with the database
+    cursor = conn.cursor()
+    
+    # Iterate over each row in the DataFrame
+    for index, row in sanitised_df.iterrows():
+        date_time = row['date_time']
+        location = row['location']
+        transaction_total = row['transaction_total']
+        payment_type = row['payment_type']
+        
+        # Check if the order already exists in the table
+        cursor.execute("INSERT INTO orders (date_time, location_id, transaction_total, payment_type_id) VALUES (%s, %s, %s, %s)", (date_time, location, transaction_total, payment_type))
+
+    # Commit the changes to the database
+    conn.commit()
+    
+    # Close the cursor
+    cursor.close()
+    
+update_orders_table(normalised_payment_type_df, conn)
+
+#-------------------------------------------------------------------------------
+
+#Read and sanitise raw csv
+
+# ****DROPS [FULL_NAME] AND [CARD_NUMBER] ONLY
+
+def read_sanitise_csv(raw_csv):
+    try:
+        columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
+        df = pd.read_csv(raw_csv, header=None, names=columns)
+        sanitised_df = df.drop(columns=['full_name', 'card_number'])
+
+    except FileNotFoundError as fnfe:
+        print(f'File not found: {fnfe}')
+
+    return sanitised_df
+
+general_df = read_sanitise_csv(raw_csv)
+
+#----------------------------------------------------------------------------------
 
 def update_product_table(sanitised_df, conn):
     # Create a cursor object to interact with the database
@@ -160,7 +204,7 @@ def update_product_table(sanitised_df, conn):
     # Close the cursor
     cursor.close()
 
-#update_product_table(df, conn)
+update_product_table(general_df, conn)
 
 #------------------------------------------------------------------------------------------
 
@@ -197,26 +241,8 @@ def update_order_product_table(sanitised_df, conn):
     conn.commit()
     cur.close()
 
-#update_order_product_table(df, conn)
+update_order_product_table(general_df, conn)
 
 #-------------------------------------------------------------------------------------------
 
-#Read and sanitise raw csv
-
-# ****DROPS [FULL_NAME], [ORDER] AND [CARD_NUMBER] ONLY
-
-def read_sanitise_csv(raw_csv):
-    try:
-        columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
-        df = pd.read_csv(raw_csv, header=None, names=columns)
-        sanitised_df = df.drop(columns=['full_name', 'order', 'card_number'])
-
-    except FileNotFoundError as fnfe:
-        print(f'File not found: {fnfe}')
-
-    return sanitised_df
-
-df = read_sanitise_csv(raw_csv)
-
-print(df)
 
