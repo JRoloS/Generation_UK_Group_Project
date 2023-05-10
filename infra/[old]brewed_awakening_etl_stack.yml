@@ -3,35 +3,36 @@ Description: >
   Template to deploy a lambda which is triggered by an S3 event.
 
 Parameters:
+  DeploymentBucket:
+    Type: String
+    Description: Enter the name of the S3 bucket where your deployment package is.
+    Default: brewed-awakening-deployment-bucket
+  DeploymentPackageKey:
+    Type: String
+    Description: Enter the name of the S3 key of your deployment package.
+    Default: ba_lambda_code.zip
   BucketNameRawData:
     Type: String
     Description: Enter the name of S3 bucket you wish to create.
-    Default: YOUR-RAW-DATA-BUCKET-NAME
-  VpcSubnetId:
-    Type: String
-    Description: The Redshift private subnet id
-    Default: subnet-01e8ba9e7640e0f56
-  SecurityGroupId:
-    Type: String
-    Description: The Redshift security group id
-    Default: sg-0e6c507aa8ae2a367
-
+    Default: delon9-brewed-awakening-raw-data
 
 Resources:
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: YOUR-LAMBDA-NAME
+      FunctionName: brewed-awakening-etl
       Runtime: python3.10
-      Handler: YOUR-HANDLER-NAME(e.g. app.main.lambda_handler)
+      Handler: app.lambda_handler
       Role: arn:aws:iam::015206308301:role/lambda-execution-role
       Timeout: 300
-      Code: YOUR-SOURCE-CODE-FOLDER-PATH (relative to where this template is, e.g. ../src)
+      Code:
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: !Ref DeploymentPackageKey
       VpcConfig:
         SecurityGroupIds:
-          - !Ref SecurityGroupId
+          - sg-0e6c507aa8ae2a367	
         SubnetIds:
-          - !Ref VpcSubnetId
+          - subnet-01e8ba9e7640e0f56
 
   S3Bucket:
     Type: 'AWS::S3::Bucket'
