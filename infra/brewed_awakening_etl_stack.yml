@@ -6,7 +6,7 @@ Parameters:
   BucketNameRawData:
     Type: String
     Description: Enter the name of S3 bucket you wish to create.
-    Default: YOUR-RAW-DATA-BUCKET-NAME
+    Default: delon9-brewed-awakening-raw-data
   VpcSubnetId:
     Type: String
     Description: The Redshift private subnet id
@@ -26,7 +26,7 @@ Resources:
       Handler: YOUR-HANDLER-NAME(e.g. app.main.lambda_handler)
       Role: arn:aws:iam::015206308301:role/lambda-execution-role
       Timeout: 300
-      Code: YOUR-SOURCE-CODE-FOLDER-PATH (relative to where this template is, e.g. ../src)
+      Code: ../source
       VpcConfig:
         SecurityGroupIds:
           - !Ref SecurityGroupId
