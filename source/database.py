@@ -26,7 +26,8 @@ def setup_db_connection(host=host,
     print("Connection established.")
     return conn
 
-conn = setup_db_connection()
+# call method
+#conn = setup_db_connection()
 
 #-------------------------------------
 
@@ -53,7 +54,8 @@ def create_locations_db_table(conn):
     conn.commit()
     cursor.close()
 
-create_locations_db_table(conn)
+#call method
+#create_locations_db_table(conn)
 
 #-------------------------------------
 
@@ -83,7 +85,8 @@ def create_orders_db_table(conn):
     conn.commit()
     cursor.close()
 
-create_orders_db_table(conn)
+# call method
+#create_orders_db_table(conn)
 
 #-------------------------------------
 
@@ -108,7 +111,8 @@ def create_orders_products_db_table(conn):
     conn.commit()
     cursor.close()
 
-create_orders_products_db_table(conn)
+# call method
+#create_orders_products_db_table(conn)
 
 #-------------------------------------------------------------------------------
 
@@ -135,7 +139,8 @@ def create_payment_types_db_table(conn):
     conn.commit()
     cursor.close()
     
-create_payment_types_db_table(conn)
+#call method
+# create_payment_types_db_table(conn)
     
 #-------------------------------------------------------------------------------
 
@@ -162,7 +167,8 @@ def create_products_db_table(conn):
     conn.commit()
     cursor.close()    
 
-create_products_db_table(conn)
+# call method
+# create_products_db_table(conn)
     
 #---------------------------------------------------------------------------
 
@@ -185,5 +191,6 @@ def add_foreign_key_constraints(conn):
     conn.commit()
     cursor.close()   
 
-add_foreign_key_constraints(conn)
+#call method
+#add_foreign_key_constraints(conn)
     
