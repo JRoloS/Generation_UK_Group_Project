@@ -1,4 +1,5 @@
 import pandas as pd
+import io
 
 #-----------------------------------------------------------------
 # [1] Read and sanitise raw csv
@@ -8,7 +9,7 @@ import pandas as pd
 def sanitise_csv_order_table(raw_csv):
     try:
         columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
-        df = pd.read_csv(raw_csv, header=None, names=columns)
+        df = pd.read_csv(io.BytesIO(raw_csv), header=None, names=columns)
         sanitised_df = df.drop(columns=['full_name', 'order', 'card_number'])
 
     except FileNotFoundError as fnfe:
@@ -119,7 +120,7 @@ def update_orders_table(sanitised_df, conn):
 def sanitise_csv_for_products(raw_csv):
     try:
         columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
-        df = pd.read_csv(raw_csv, header=None, names=columns)
+        df = pd.read_csv(io.BytesIO(raw_csv), header=None, names=columns)
         sanitised_df = df.drop(columns=['full_name', 'card_number'])
 
     except FileNotFoundError as fnfe:

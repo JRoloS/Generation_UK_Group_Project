@@ -2,18 +2,13 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 
-load_dotenv('docker_setup/.env')
-host = os.environ.get("sql_host")
-user = os.environ.get("sql_user")
-password = os.environ.get("sql_pass")
-database = os.environ.get("sql_db")
-port = os.environ.get("sql_port")
 
-def setup_db_connection(host=host, 
-                        user=user, 
-                        password=password,
-                        db=database,
-                        port=port):
+
+def setup_db_connection(host, 
+                        user, 
+                        password,
+                        db,
+                        port):
     
     print("Connecting to database....")
     conn = psycopg2.connect(
