@@ -38,13 +38,13 @@ By this our client, Super-Cafe, will be able to expertly and efficiently organis
 <br /> 
 
 ## Installation Instructions
-This section is a step-by-step guide on how to install and set up the project, including any dependencies or prerequisites required for the project.
+This section is a step-by-step guide on how to install and set up the project, including any dependencies or prerequisites required for our project.
 
-* Install Python 3 on VS Code. This can be downloaded from the official website [here](https://www.python.org/downloads/) and follow the installation instructions. Once Python 3 is installed, make sure it's added to your system's PATH environment variable.
+* Install Python 3 on VS Code. This can be downloaded from the official website [here](https://www.python.org/downloads/) and follow the installation instructions. Once Python 3 is installed, make sure it's added to the system's PATH environment variable.
 
-* Set up AWS. You'll need to create an AWS account and set up an S3 bucket to store your project files. Follow the AWS documentation to create an S3 bucket and obtain your access key ID and secret access key.
+* Set up AWS. We will create an AWS account and set up an S3 bucket to store the project files. Follow the AWS documentation to create an S3 bucket and obtain an access key ID and secret access key.
 
-* Set up Grafana. You'll need to download and install Grafana on your local machine. Once Grafana is installed, open your browser and navigate to http://localhost:3000 to access the Grafana dashboard. Log in with the default username and password (admin/admin).
+* Set up Grafana. We'll need to download and install Grafana on our local machine. Once Grafana is installed, open a browser and navigate to http://localhost:3000 to access the Grafana dashboard. Log in with the default username and password (admin/admin).
 
 * Clone the project repository. Use Git to clone the project repository to your local machine.
 Install project dependencies. 
@@ -66,6 +66,11 @@ Replace `your_access_key_id`, `your_secret_access_key`, and `your_grafana_api_ke
 ## Configuration
 This section provides information on how to customize the project to meet the specific needs. This section may include details on how to modify settings, configure options, or adjust parameters to optimize the project. By providing clear and concise instructions on how to configure the project, we can help users get the most out of the software and ensure that it meets their unique requirements.
 <br /> <br />
+
+### **Database Schema**
+*Please insert image*
+### **Lambda Schema**
+*Please insert image*
 
 ### **Setting up the Database**
 * Choose a database management system (DBMS) e.g. MySQL, PostgreSQL.
@@ -129,12 +134,7 @@ To add a one-to-many relationship between two tables in the database, follow the
    FOREIGN KEY (customer_id)
    REFERENCES customers(customer_id);
    ```
-
-
-
-
-
-
+   <br/>
 
 ## Usage
 This section provides instructions on how to use the project, including any dependencies or prerequisites required for the project, as well as examples and code snippets. 
@@ -153,6 +153,23 @@ Everything inside the quotes will look like this... will be used for instruction
 * New lines that start with * will be bullet points
 
 <br />
+
+### **Navigating Directories**
+Here are some common commands used to navigate directories in the terminal:
+
+```
+"pwd": prints the current working directory
+"ls": lists the files and directories in the current working directory
+"cd": changes the current working directory to a new directory
+"cd ..": changes the current working directory to the parent directory of the current directory
+"mkdir": creates a new directory
+"rm": removes a file or directory
+"cp": copies a file or directory
+"mv": moves a file or directory
+"touch": creates a new file
+```
+
+<br/>
 
 ### **Essential Git Commands**
 
@@ -195,6 +212,7 @@ There are several benefits to using Adminer SQL as a database management tool:
 *Customization: Adminer SQL is highly customizable and can be extended with plugins and themes. This allows users to tailor the tool to their specific needs and preferences.
 
 We preferred to use Adminer SQL for our Brewed Awakening project, over other database management tools for these reasons. Additionally, because it is open source software, it is free to use and can be customized to meet specific needs. Its user-friendly interface and support for multiple database systems make it a popular choice for developers.
+<br/><br/>
 
 ## Authors
 
@@ -220,6 +238,14 @@ We preferred to use Adminer SQL for our Brewed Awakening project, over other dat
     * Various bug fixes and optimizations
     * See [commit change]() or See [release history]() -->
 
+## Built With
+The Brewed Awakening project was built using a combination of technologies, including:
+* Python 3 for back-end 
+* AWS Lambda for severless computing
+* SQL For the Database
+* Metrics and logs were collected from multiple sources including AWS S3 buckets, and displayed using Grafana dashboards.
+
+<br/>
 
 ## Acknowledgments
 
@@ -227,3 +253,5 @@ Special Thanks, Inspiration, code snippets, etc.
 * [Generation UK Program](https://uk.generation.org/)
 * Our Mentors
 * Not Barbara
+* [W3 Schools](https://www.w3schools.com/)
+* [Trello](https://trello.com/)
