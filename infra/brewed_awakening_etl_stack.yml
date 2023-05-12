@@ -23,7 +23,7 @@ Resources:
     Properties:
       FunctionName: brewed-awakening-etl
       Runtime: python3.10
-      Handler: app.main.lambda_handler
+      Handler: app.lambda_handler
       Role: arn:aws:iam::015206308301:role/lambda-execution-role
       Timeout: 300
       Code: ../source
