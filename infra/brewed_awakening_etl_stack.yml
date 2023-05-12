@@ -21,9 +21,9 @@ Resources:
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: YOUR-LAMBDA-NAME
+      FunctionName: brewed-awakening-etl
       Runtime: python3.10
-      Handler: YOUR-HANDLER-NAME(e.g. app.main.lambda_handler)
+      Handler: app.main.lambda_handler
       Role: arn:aws:iam::015206308301:role/lambda-execution-role
       Timeout: 300
       Code: ../source
