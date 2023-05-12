@@ -6,7 +6,7 @@ Parameters:
   BucketNameRawData:
     Type: String
     Description: Enter the name of S3 bucket you wish to create.
-    Default: delon9-brewed-awakening-raw-data
+    Default: brewed-awakening-raw-data
   VpcSubnetId:
     Type: String
     Description: The Redshift private subnet id
