@@ -90,33 +90,31 @@ class TestSetupDbConnection(unittest.TestCase):
 
 
 # --- Unit test for 
-
-# class TestCreateLocationsDbTable(unittest.TestCase):
-#     @patch('database.setup_db_connection')
-#     def test_create_locations_db_table(self, mock_conn):
-#         mock_cursor = Mock()
-#         mock_conn.return_value.cursor.return_value = mock_cursor
-#         create_locations_db_table(mock_conn)
-#         print(mock_cursor.execute.call_args_list)
-#         mock_cursor.execute.assert_any_call(
-#             'DROP TABLE IF EXISTS "locations" CASCADE;'
-#         )
-#         mock_cursor.execute.assert_any_call(
-#             'DROP SEQUENCE IF EXISTS locations_location_id_seq;'
-#         )
-#         mock_cursor.execute.assert_any_call("""
-#             CREATE SEQUENCE locations_location_id_seq
-#             INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
-#         """)
-#         mock_cursor.execute.assert_any_call("""
-#             CREATE TABLE "public"."locations" (
-#             "location_id" integer DEFAULT nextval('locations_location_id_seq') NOT NULL,
-#             "location_name" character varying(100) NOT NULL,
-#             CONSTRAINT "locations_pkey" PRIMARY KEY ("location_id")
-#         ) WITH (oids = false);
-#         """)
-#         mock_conn.return_value.commit.assert_called_once()
-#         mock_cursor.close.assert_called_once()
+from database import create_locations_db_table
+class TestCreateLocationsDbTable(unittest.TestCase):
+    @patch('database.setup_db_connection')
+    def test_create_locations_db_table(self, mock_conn):
+        mock_cursor = Mock()
+        mock_conn.return_value.cursor.return_value = mock_cursor
+        # create the mock before calling the function
+        drop_if_location_table_exists = """
+            DROP TABLE IF EXISTS "locations" CASCADE;
+            DROP SEQUENCE IF EXISTS locations_location_id_seq;
+            CREATE SEQUENCE locations_location_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+        """
+        create_locations_table = """
+            CREATE TABLE "public"."locations" (
+            "location_id" integer DEFAULT nextval('locations_location_id_seq') NOT NULL,
+            "location_name" character varying(100) NOT NULL,
+            CONSTRAINT "locations_pkey" PRIMARY KEY ("location_id")
+        ) WITH (oids = false);
+        """
+        mock_cursor.execute.side_effect = [None, None, None, None]
+        create_locations_db_table(mock_conn)
+        mock_cursor.execute.assert_any_call(drop_if_location_table_exists)
+        mock_cursor.execute.assert_any_call(create_locations_table)
+        mock_conn.return_value.commit.assert_called_once()
+        mock_cursor.close.assert_called_once()
 
 
 
