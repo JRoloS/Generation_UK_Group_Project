@@ -252,6 +252,5 @@ The Brewed Awakening project was built using a combination of technologies, incl
 Special Thanks, Inspiration, code snippets, etc.
 * [Generation UK Program](https://uk.generation.org/)
 * Our Mentors
-* Not Barbara
 * [W3 Schools](https://www.w3schools.com/)
 * [Trello](https://trello.com/)
