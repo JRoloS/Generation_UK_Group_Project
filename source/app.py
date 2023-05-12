@@ -19,7 +19,7 @@ def lambda_handler(event, context):
         response = s3.get_object(Bucket=bucket, Key=key)
         print(f'lambda_handler s3 response = {response}')
         content = response['Body'].read()
-
+# jkasnjsnasnlfsjan
 #-----------------------------------------------------------------------------------------
 # Below variable is linked to a function that would LOCALLY read a csv from the computer:
 
