@@ -1,0 +1,6 @@
+#This file is to download all necessary modules to run our program:
+
+psycopg2-binary==2.9.6
+python-dotenv==0.15.0
+pandas==2.0.0
+pytest==7.3.1

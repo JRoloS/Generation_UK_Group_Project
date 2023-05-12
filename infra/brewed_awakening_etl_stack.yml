@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Template to deploy a lambda which is triggered by an S3 event.
+
+Parameters:
+  BucketNameRawData:
+    Type: String
+    Description: Enter the name of S3 bucket you wish to create.
+    Default: brewed-awakening-raw-data
+  VpcSubnetId:
+    Type: String
+    Description: The Redshift private subnet id
+    Default: subnet-01e8ba9e7640e0f56
+  SecurityGroupId:
+    Type: String
+    Description: The Redshift security group id
+    Default: sg-0e6c507aa8ae2a367
+
+
+Resources:
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: brewed-awakening-etl
+      Runtime: python3.10
+      Handler: app.lambda_handler
+      Role: arn:aws:iam::015206308301:role/lambda-execution-role
+      Timeout: 300
+      Code: ../source
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref SecurityGroupId
+        SubnetIds:
+          - !Ref VpcSubnetId
+
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DependsOn:
+      - S3BucketPermission
+    Properties:
+      BucketName: !Ref BucketNameRawData
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt LambdaFunction.Arn
+
+  S3BucketPermission:
+    Type: AWS::Lambda::Permission
+    Properties: 
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref LambdaFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub "arn:aws:s3:::${BucketNameRawData}"
