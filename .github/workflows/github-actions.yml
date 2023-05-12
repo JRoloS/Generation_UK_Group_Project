@@ -37,4 +37,4 @@ jobs:
       - name: Package CloudFormation template
         run: aws cloudformation package --template-file infra/brewed_awakening_etl_stack.yml --s3-bucket delon9-brewed-awakening-raw-data --output-template-file stack-template-packaged.yml
       - name: Deploy CloudFormation stack
-        run: aws cloudformation deploy --stack-name brewed_awakening_stack --template-file stack-template-packaged.yml --region eu-west-1 --capabilities CAPABILITY_IAM
+        run: aws cloudformation deploy --stack-name brewed-awakening-stack --template-file stack-template-packaged.yml --region eu-west-1 --capabilities CAPABILITY_IAM
