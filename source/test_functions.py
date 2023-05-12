@@ -88,6 +88,38 @@ class TestSetupDbConnection(unittest.TestCase):
 #---- [end] Unit test for setup_db_connection -----------------
 
 
+
+# --- Unit test for 
+from database import create_locations_db_table
+# class TestCreateLocationsDbTable(unittest.TestCase):
+
+# class TestCreateLocationsDbTable(unittest.TestCase):
+
+#     def setUp(self):
+#         self.mock_cursor = MagicMock()
+#         self.mock_conn = MagicMock()
+#         self.mock_conn.return_value.cursor.return_value = self.mock_cursor
+
+#     def tearDown(self):
+#         self.mock_cursor.close.assert_called_once()
+#         self.mock_conn.close.assert_called_once()
+
+#     def test_create_locations_db_table(self):
+#         with patch('database.setup_db_connection', return_value=self.mock_conn):
+#             create_locations_db_table()
+        
+#         expected_calls = [
+#             call("DROP TABLE IF EXISTS \"locations\" CASCADE;"),
+#             call("DROP SEQUENCE IF EXISTS locations_location_id_seq;"),
+#             call("CREATE SEQUENCE locations_location_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;"),
+#             call("CREATE TABLE \"public\".\"locations\" (\"location_id\" integer DEFAULT nextval('locations_location_id_seq') NOT NULL, \"location_name\" character varying(100) NOT NULL, CONSTRAINT \"locations_pkey\" PRIMARY KEY (\"location_id\")) WITH (oids = false);")
+#         ]
+
+#         self.mock_cursor.execute.assert_has_calls(expected_calls, any_order=True)
+#         self.mock_conn.commit.assert_called_once()
+
+
+# --- TRANSFORMATION UNIT TESTING -----------------------------
 #---- Unit test for sanatise_csv_order_table ------------------ 
 from transformation import sanitise_csv_order_table
 
@@ -140,5 +172,22 @@ def test_sort_time_to_postgre_format():
     expected_datetime = pd.to_datetime(expected_datetime_str, format='%Y-%m-%d %H:%M:%S')
     assert sorted_df['date_time'].iloc[0] == expected_datetime
 # --- [end] Unit test for sort_time_to_postgre_format ---------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
