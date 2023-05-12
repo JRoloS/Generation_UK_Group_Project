@@ -88,36 +88,6 @@ class TestSetupDbConnection(unittest.TestCase):
 #---- [end] Unit test for setup_db_connection -----------------
 
 
-# --- Unit test for create_locations_db_table <------------- Will come back to this still getting an asertion error
-# from database import create_locations_db_table
-# # class TestCreateLocationsDbTable(unittest.TestCase):
-# from unittest.mock import Mock, patch
-# from database import create_locations_db_table, setup_db_connection
-
-# class TestCreateLocationsDbTable(unittest.TestCase):
-#     @patch('database.setup_db_connection')
-#     def test_create_locations_db_table(self, mock_conn):
-#         mock_cursor = Mock()
-#         mock_conn.return_value.cursor.return_value = mock_cursor
-#         # create the mock before calling the function
-#         drop_if_location_table_exists = """
-#             DROP TABLE IF EXISTS "locations" CASCADE;
-#             DROP SEQUENCE IF EXISTS locations_location_id_seq;
-#             CREATE SEQUENCE locations_location_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
-#             """
-#         create_locations_table = """
-#             CREATE TABLE "public"."locations" (
-#             "location_id" integer DEFAULT nextval('locations_location_id_seq') NOT NULL,
-#             "location_name" character varying(100) NOT NULL,
-#             CONSTRAINT "locations_pkey" PRIMARY KEY ("location_id")
-#             ) WITH (oids = false);
-#             """
-#         mock_cursor.execute.side_effect = [None, None, None, None]
-#         create_locations_db_table(mock_conn)
-#         mock_cursor.execute.assert_any_call(drop_if_location_table_exists)
-#         mock_cursor.execute.assert_any_call(create_locations_table)
-#         mock_conn.return_value.commit.assert_called_once()
-#         mock_cursor.close.assert_called_once()
 
 
 
@@ -155,24 +125,51 @@ class TestSetupDbConnection(unittest.TestCase):
 # #---- [end] Unit test for sanatise_csv_order_table -------------
 
 
+
+# def sanitise_csv_order_table(raw_csv):
+#     try:
+#         columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
+#         df = pd.read_csv(io.BytesIO(raw_csv), header=None, names=columns)
+#         sanitised_df = df.drop(columns=['full_name', 'order', 'card_number'])
+
+#     except FileNotFoundError as fnfe:
+#         print(f'File not found: {fnfe}')
+
+#     return sanitised_df
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # # --- Unit test for sort_time_to_postgre_format (We have to be sure that the expected format is YYYY-MM-DD)
-# from transformation import sort_time_to_postgre_format
+from transformation import sort_time_to_postgre_format
 
-# def test_sort_time_to_postgre_format():
+def test_sort_time_to_postgre_format():
     
-#     # create mock dataframe
-#     data = {'date_time': ['30/12/2020 09:00'],
-#             'location': ['London'],
-#             'transaction_total': [10.0]}
-#     df = pd.DataFrame(data)
+    # create mock dataframe
+    data = {'date_time': ['30/12/2020 09:00'],
+            'location': ['London'],
+            'transaction_total': [10.0]}
+    df = pd.DataFrame(data)
 
-#     # call function with mock dataframe
-#     sorted_df = sort_time_to_postgre_format(df)
+    # call function with mock dataframe
+    sorted_df = sort_time_to_postgre_format(df)
 
-#     # check if dataframe was sorted correctly
-#     expected_datetime_str = '2020-12-30 09:00:00'
-#     expected_datetime = pd.to_datetime(expected_datetime_str, format='%Y-%m-%d %H:%M:%S')
-#     assert sorted_df['date_time'].iloc[0] == expected_datetime
+    # check if dataframe was sorted correctly
+    expected_datetime_str = '2020-12-30 09:00:00'
+    expected_datetime = pd.to_datetime(expected_datetime_str, format='%Y-%m-%d %H:%M:%S')
+    assert sorted_df['date_time'].iloc[0] == expected_datetime
 # # --- [end] Unit test for sort_time_to_postgre_format ---------------------------------------
 
 
