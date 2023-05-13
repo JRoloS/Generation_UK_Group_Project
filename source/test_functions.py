@@ -9,6 +9,8 @@ from unittest.mock import patch, Mock, MagicMock
 import unittest
 import pandas as pd
 import psycopg2
+import io
+import csv
 
 # -------------------------------- UNIT TEST FUNCTIONS ----------------------------------------------------------
 
@@ -62,66 +64,48 @@ class TestSetupDbConnection(unittest.TestCase):
 
 
 
+# ------ TEST sanatise_csv_order_table ------------------------
+from transformation import sanitise_csv_order_table
 
+def sanitise_csv_order_table(raw_csv):
+    try:
+        columns = ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
+        df = pd.DataFrame(raw_csv, columns=columns)
+        sanitised_df = df.drop(columns=['full_name', 'order', 'card_number'])
 
-# --- TRANSFORMATION UNIT TESTING -----------------------------
-#---- Unit test for sanatise_csv_order_table ------------------ 
-# from transformation import sanitise_csv_order_table
+    except FileNotFoundError as fnfe:
+        print(f'File not found: {fnfe}')
 
-# def test_sanitise_csv_order_table():
-#     #Dummy csv file path
-#     raw_csv = "dummy.csv"
+    return sanitised_df
+
+class TestSanitiseCsvOrderTable(unittest.TestCase):
     
-#     #Dummy DataFrame to return
-#     columns = ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']
-#     data = [
-#         ['2022-05-09 13:00:00', 'London', 'John Doe', 'Americano, 1.20, Latte 2.20', 2.40, 'CARD', '1234'],
-#         ['2022-05-09 13:30:00', 'Not London', 'Jane Doe', 'Tea 1.15', 1.15, 'CASH', '5678']
-#     ]
-#     dummy_df = pd.DataFrame(data, columns=columns)
-    
-#     # mock the pd.read_csv function and return the dummy DataFrame
-#     pd.read_csv = Mock(return_value=dummy_df)
-    
-#     # call the function being tested
-#     sanitised_df = sanitise_csv_order_table(raw_csv)
-    
-#     # check if the returned DataFrame is correct
-#     expected_columns = ['date_time', 'location', 'transaction_total', 'payment_type']
-#     expected_data = [
-#         ['2022-05-09 13:00:00', 'London', 2.40, 'CARD'],
-#         ['2022-05-09 13:30:00', 'Not London', 1.15, 'CASH']
-#     ]
-#     expected_df = pd.DataFrame(expected_data, columns=expected_columns)
-    
-#     pd.testing.assert_frame_equal(sanitised_df, expected_df)
-# #---- [end] Unit test for sanatise_csv_order_table -------------
+    def test_sanitise_csv_order_table(self):
+        # Define the raw CSV input
+        raw_csv = [
+         ['2022-05-09 13:00:00', 'London', 'John Doe', 'Americano, 1.20, Latte 2.20', 2.40, 'CARD', '1234'],
+         ['2022-05-09 13:30:00', 'Not London', 'Jane Doe', 'Tea 1.15', 1.15, 'CASH', '5678']
+                  ]
+
+        # Define the expected values
+        expected_columns = ['date_time', 'location', 'transaction_total', 'payment_type']
+        expected_data = [
+            ['2022-05-09 13:00:00', 'London', 2.40, 'CARD'],
+            ['2022-05-09 13:30:00', 'Not London', 1.15, 'CASH']
+        ]
+
+        # Call the function to get the actual result
+        actual_result = sanitise_csv_order_table(raw_csv)
+
+        # Check that the column names are as expected
+        self.assertEqual(list(actual_result.columns), expected_columns)
+
+        # Check that the data is as expected
+        for i, row in enumerate(actual_result.values):
+            self.assertEqual(list(row), expected_data[i])
 
 
-
-# def sanitise_csv_order_table(raw_csv):
-#     try:
-#         columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
-#         df = pd.read_csv(io.BytesIO(raw_csv), header=None, names=columns)
-#         sanitised_df = df.drop(columns=['full_name', 'order', 'card_number'])
-
-#     except FileNotFoundError as fnfe:
-#         print(f'File not found: {fnfe}')
-
-#     return sanitised_df
-
-
-
-
-
-
-
-
-
-
-
-
-
+# ------ [end] TEST sanatise_csv_order_table ------------------------
 
 
 
