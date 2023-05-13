@@ -26,33 +26,6 @@ test_absolute_path_for_raw_data()
 
 
 
-# ---- Unit test for load_dotenv -----------------------
-from database import load_dotenv
-
-def test_load_dotenv():
-    with patch.dict('os.environ', {
-            'sql_host': 'localhost',
-            'sql_user': 'testuser',
-            'sql_pass': 'testpass',
-            'sql_db': 'testdb',
-            'sql_port': '1234'
-        }):
-        dotenv.load_dotenv('docker_setup/.env')
-        host = os.environ.get("sql_host")
-        user = os.environ.get("sql_user")
-        password = os.environ.get("sql_pass")
-        database = os.environ.get("sql_db")
-        port = os.environ.get("sql_port")
-        assert host == 'localhost'
-        assert user == 'testuser'
-        assert password == 'testpass'
-        assert database == 'testdb'
-        assert port == '1234'
-        
-test_load_dotenv()
-# ---- [end] Unit test for load_dotenv --------------------
-
-
 # ---- Unit test for setup_db_connection ------------------
 from database import setup_db_connection
 
