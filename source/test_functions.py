@@ -14,7 +14,10 @@ import csv
 
 # -------------------------------- UNIT TEST FUNCTIONS ----------------------------------------------------------
 
-# ---- Unit Test for RawData Path --------------------
+
+############################   ABSOLUTE LOCAL PATH  ###########################
+
+# 1/1 ---- Unit Test for RawData Path --------------------
 from absolute_local_path import absolute_path_for_raw_data #NOTE: This one will be removed when moving to Lambdas 
 
 def test_absolute_path_for_raw_data():
@@ -24,11 +27,17 @@ def test_absolute_path_for_raw_data():
      assert raw_csv == expected_csv_path
     
 test_absolute_path_for_raw_data()
-# ---- [end] Unit Test for RawData Path ----------------
+# 1/1 ---- [end] Unit Test for RawData Path ----------------
+############################### END ABSOLUTE LOCAL PATH ########################
 
 
 
-# ---- Unit test for setup_db_connection ------------------
+
+
+
+############################## DATABASE #######################################
+
+# 1/7 ---- Unit test for setup_db_connection ------------------
 from database import setup_db_connection
 
 class TestSetupDbConnection(unittest.TestCase):
@@ -60,9 +69,38 @@ class TestSetupDbConnection(unittest.TestCase):
         )
 
         self.assertEqual(conn, mock_connection)
-#---- [end] Unit test for setup_db_connection -----------------
+# 1/7 ---- [end] Unit test for setup_db_connection -----------------
 
 
+# 2/7 ------ Unit Test for create_redshift_database_schema ------------------------------------------
+from database import create_redshift_database_schema
+
+class TestCreateRedshiftDatabaseSchema(unittest.TestCase):
+    @patch("database.create_locations_db_table")
+    @patch("database.create_orders_db_table")
+    @patch("database.create_orders_products_db_table")
+    @patch("database.create_payment_types_db_table")
+    @patch("database.create_products_db_table")
+    @patch("database.add_foreign_key_constraints")
+    def test_create_redshift_database_schema(self, mock_fk, mock_products, mock_payment_types, mock_orders_products, mock_orders, mock_locations):
+        mock_cursor = Mock()
+        create_redshift_database_schema(mock_cursor)
+
+        mock_locations.assert_called_once_with(mock_cursor)
+        mock_orders.assert_called_once_with(mock_cursor)
+        mock_orders_products.assert_called_once_with(mock_cursor)
+        mock_payment_types.assert_called_once_with(mock_cursor)
+        mock_products.assert_called_once_with(mock_cursor)
+        mock_fk.assert_called_once_with(mock_cursor)
+# 2/7 ------ Unit Test for create_redshift_database_schema ------------------------------------------
+
+
+######################## END DATABASE #######################################
+
+
+
+
+#########################   TRANSFORMATION ###################################
 
 # ------ TEST sanatise_csv_order_table ------------------------
 from transformation import sanitise_csv_order_table
@@ -103,11 +141,7 @@ class TestSanitiseCsvOrderTable(unittest.TestCase):
         # Check that the data is as expected
         for i, row in enumerate(actual_result.values):
             self.assertEqual(list(row), expected_data[i])
-
-
 # ------ [end] TEST sanatise_csv_order_table ------------------------
-
-
 
 # # --- Unit test for sort_time_to_postgre_format (We have to be sure that the expected format is YYYY-MM-DD)
 from transformation import sort_time_to_postgre_format
@@ -129,4 +163,4 @@ def test_sort_time_to_postgre_format():
     assert sorted_df['date_time'].iloc[0] == expected_datetime
 # # --- [end] Unit test for sort_time_to_postgre_format ---------------------------------------
 
-
+############################ END TRANSFORMATION #############################################
