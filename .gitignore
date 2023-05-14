@@ -132,3 +132,6 @@ dmypy.json
 # Folders to Ignore
 #raw_data/
 results/
+
+#Ignore list
+unittest.py
