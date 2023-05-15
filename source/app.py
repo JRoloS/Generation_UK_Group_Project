@@ -15,7 +15,6 @@ def lambda_handler(event, context):
     parameter_details = ssm_client.get_parameter(Name='brewed-awakening-redshift-settings')
     redshift_details = json.loads(parameter_details['Parameter']['Value'])
     print(f'lambda_handler bucket = {bucket}, key = {key}')
-    print(redshift_details['database-name'])
     try:
         response = s3.get_object(Bucket=bucket, Key=key)
         print(f'lambda_handler s3 response = {response}')
@@ -86,8 +85,6 @@ def lambda_handler(event, context):
         
     except Exception as error:
         print('Error has occured in lambda_handler: ' + str(error))
-        
-lambda_handler()
 
 #-------------------------------------------------------------------------------------------
         
