@@ -53,10 +53,10 @@ def create_locations_db_table(cursor):
     
     create_locations_table = """
         CREATE TABLE IF NOT EXISTS "public"."locations" (
-        "location_id" integer DEFAULT nextval('locations_location_id_seq') NOT NULL,
-        "location_name" character varying(100) NOT NULL,
+        "location_id" int identity(1, 1),
+        "location_name" VARCHAR(100) NOT NULL,
         CONSTRAINT "locations_pkey" PRIMARY KEY ("location_id")
-    ) WITH (oids = false);
+    );
     """
     
     print("'locations' table being created....")
@@ -73,13 +73,13 @@ def create_orders_db_table(cursor):
     
     create_orders_table = """
         CREATE TABLE IF NOT EXISTS "public"."orders" (
-        "order_id" integer DEFAULT nextval('orders_order_id_seq') NOT NULL,
+        "order_id" int identity(1, 1),
         "date_time" timestamp NOT NULL,
         "location_id" integer NOT NULL,
         "transaction_total" numeric(10,2) NOT NULL,
         "payment_type_id" integer NOT NULL,
         CONSTRAINT "orders_pkey" PRIMARY KEY ("order_id")
-    ) WITH (oids = false);
+    );
     """
 
     print("'orders' table being created....")
@@ -99,7 +99,7 @@ def create_orders_products_db_table(cursor):
         "order_id" integer NOT NULL,
         "product_id" integer NOT NULL,
         "product_price" numeric(10,2)
-    ) WITH (oids = false);
+    );
     """
     
     print("'orders_products' database being created....")
@@ -116,10 +116,10 @@ def create_payment_types_db_table(cursor):
     
     create_payment_types_table = """
         CREATE TABLE IF NOT EXISTS "public"."payment_types" (
-        "payment_type_id" integer DEFAULT nextval('payment_types_payment_type_id_seq') NOT NULL,
-        "payment_name" character varying(10),
+        "payment_type_id" int identity(1, 1),
+        "payment_name" VARCHAR(10),
         CONSTRAINT "payment_types_pkey" PRIMARY KEY ("payment_type_id")
-    ) WITH (oids = false);
+    );
     """
     
     print("'payment_types' database being created....")
@@ -135,10 +135,10 @@ def create_products_db_table(cursor):
     
     create_products_table = """
         CREATE TABLE IF NOT EXISTS "public"."products" (
-        "product_id" integer DEFAULT nextval('products_product_id_seq') NOT NULL,
-        "product_name" character varying(100),
+        "product_id" int identity(1, 1),
+        "product_name" VARCHAR(100),
         CONSTRAINT "products_pkey" PRIMARY KEY ("product_id")
-    ) WITH (oids = false);
+    );
     """
     
     print("'products' table being created....")
