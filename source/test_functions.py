@@ -256,6 +256,6 @@ class TestUpdateOrdersTable(unittest.TestCase):
         ]
         self.assertEqual(mock_cursor.execute.call_args_list, expected_calls)
 
-#[5/8] [End] --- Test update orders table ---
+#[5/8] [End] --- Test update orders table ----
 
 ############################ END TRANSFORMATION #############################################
