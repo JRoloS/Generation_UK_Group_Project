@@ -152,7 +152,7 @@ def update_order_product_table(sanitised_df, cursor):
     cursor.execute("SELECT MAX(order_id) FROM orders_products")
     max_order_id = cursor.fetchone()[0]
     if max_order_id is None:
-        max_order_id = 1
+        max_order_id = 0
     # Get the product names and their associated ids from the "products" table
     cursor.execute("SELECT product_name, product_id FROM products")
     product_id_dict = dict(cursor.fetchall())
