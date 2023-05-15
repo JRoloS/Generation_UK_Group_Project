@@ -41,7 +41,8 @@ def update_locations(sanitised_df, cursor):
 
         # If the location name is not in the table, insert it and update the associated column within the dataframe with the returned location_id
         if result is None:
-            cursor.execute("INSERT INTO locations (location_name) VALUES (%s) RETURNING location_id", (name,))
+            cursor.execute("INSERT INTO locations (location_name) VALUES (%s)", (name,))
+            cursor.execute("SELECT location_id FROM locations WHERE location_name = (%s)", (name,))
             location_id = cursor.fetchone()[0]
         else:
             location_id = result[0]
@@ -67,7 +68,8 @@ def update_payment_types(sanitised_df, cursor):
 
         # If the payment name is not in the table, insert it
         if result is None:
-            cursor.execute("INSERT INTO payment_types (payment_name) VALUES (%s) RETURNING payment_type_id", (name,))
+            cursor.execute("INSERT INTO payment_types (payment_name) VALUES (%s)", (name,))
+            cursor.execute("SELECT payment_type_id FROM payment_types WHERE payment_name = (%s)", (name,))
             payment_type_id = cursor.fetchone()[0]
         else:
             payment_type_id = result[0]
@@ -76,6 +78,8 @@ def update_payment_types(sanitised_df, cursor):
         sanitised_df.loc[sanitised_df['payment_type'] == name, 'payment_type'] = payment_type_id
 
     return sanitised_df
+
+
 
 #-------------------------------------------------------------------------------------------------------------------
 
@@ -135,7 +139,8 @@ def update_product_table(sanitised_df, cursor):
             result = cursor.fetchone()
             if result is None:
                 # If the product does not exist, insert it into the table
-                cursor.execute("INSERT INTO products (product_name) VALUES (%s) RETURNING product_id", (product_name,))
+                cursor.execute("INSERT INTO products (product_name) VALUES (%s)", (product_name,))
+                cursor.execute("SELECT product_id FROM products WHERE product_name = (%s)", (product_name,))
     
 #------------------------------------------------------------------------------------------
 
