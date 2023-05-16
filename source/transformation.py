@@ -38,6 +38,7 @@ def sort_time_to_postgre_format(df):
 # [3] Checks to see if dataframe value (location) is first within the target table (locations), if not then inserts value and returns value ID, replaces the value within the original dataframe:
 
 def update_locations(sanitised_df, cursor):
+    print('update_locations function started..')
     try:
     # Get the distinct location names from the sanitized dataframe
         location_names = sanitised_df['location'].unique()
@@ -57,6 +58,7 @@ def update_locations(sanitised_df, cursor):
                 
             sanitised_df.loc[sanitised_df['location'] == name, 'location'] = location_id
 
+        print('update_locations function completed.')
 
         return sanitised_df
 
@@ -68,6 +70,7 @@ def update_locations(sanitised_df, cursor):
 # [4] Checks to see if dataframe value (payment_type_name) is first within the target table (payment_types), if not then inserts value and returns value ID, replaces the value within the original dataframe:
 
 def update_payment_types(sanitised_df, cursor):
+    print('update_payment_types function started..')
     try:
         # Get the distinct payment names from the sanitized dataframe
         payment_types = sanitised_df['payment_type'].unique()
@@ -88,6 +91,8 @@ def update_payment_types(sanitised_df, cursor):
             # Update the payment_type column in the dataframe with the payment_type_id
             sanitised_df.loc[sanitised_df['payment_type'] == name, 'payment_type'] = payment_type_id
 
+        print('update_payment_types function completed.')
+        
         return sanitised_df
     
     except Exception as error:
@@ -100,6 +105,7 @@ def update_payment_types(sanitised_df, cursor):
 # [5] After original dataframe is normalised with replaced values from "update_locations" & "update_payment_types", inserts all values per row into "orders" table in the database:
 
 def update_orders_table(sanitised_df, cursor):
+    print('update_orders_table function started..')
     try:
         # Iterate over each row in the DataFrame
         for index, row in sanitised_df.iterrows():
@@ -111,6 +117,8 @@ def update_orders_table(sanitised_df, cursor):
             # Check if the order already exists in the table
             cursor.execute("INSERT INTO orders (date_time, location_id, transaction_total, payment_type_id) VALUES (%s, %s, %s, %s)", (date_time, location, transaction_total, payment_type))
 
+        print('update_orders_table function completed.')
+        
     except Exception as error:
         print(f'Error orders: {error}')
 
@@ -121,10 +129,12 @@ def update_orders_table(sanitised_df, cursor):
 # ****DROPS [FULL_NAME] AND [CARD_NUMBER] ONLY
 
 def sanitise_csv_for_products(raw_csv):
+    print('sanitise_csv_for_products function started..')
     try:
         columns =  ['date_time', 'location', 'full_name', 'order', 'transaction_total', 'payment_type', 'card_number']  # Headers for the orders csv files
         df = pd.read_csv(io.BytesIO(raw_csv), header=None, names=columns)
         sanitised_df = df.drop(columns=['full_name', 'card_number'])
+        print('sanitise_csv_for_products function completed.')
 
     except FileNotFoundError as fnfe:
         print(f'File not found: {fnfe}')
@@ -136,6 +146,7 @@ def sanitise_csv_for_products(raw_csv):
 # [7] Iterates through the "order" column within dataframe and seperates multiple products into individuals with their prices, inserts only product names into "products" table:
 
 def update_product_table(sanitised_df, cursor):
+    print('update_product_table function started..')
     try:
         # Iterate over each row in the DataFrame
         for index, row in sanitised_df.iterrows():
@@ -158,6 +169,8 @@ def update_product_table(sanitised_df, cursor):
                     cursor.execute("INSERT INTO products (product_name) VALUES (%s)", (product_name,))
                     cursor.execute("SELECT product_id FROM products WHERE product_name = (%s)", (product_name,))
     
+        print('update_product_table function completed.')
+        
     except Exception as error:
         print(f'Error updating products: {error}')
     
@@ -166,6 +179,7 @@ def update_product_table(sanitised_df, cursor):
 # [8] Finally, inserts both "order_id" & "product_id" as well as "price" into "orders_products" database table, foreign key constraints will link them up accordingly: 
 
 def update_order_product_table(sanitised_df, cursor):
+    print('update_order_product_table function started..')
     try:
         # Get the current max order_id in the "orders_products" table
         cursor.execute("SELECT MAX(order_id) FROM orders_products")
@@ -193,6 +207,8 @@ def update_order_product_table(sanitised_df, cursor):
                 product_id = product_id_dict[product_name]
                 # Insert the order_id, product_id, and product_price into the "orders_products" table
                 cursor.execute("INSERT INTO orders_products (order_id, product_id, product_price) VALUES (%s, %s, %s)", (order_id, product_id, product_price))
+        
+        print('update_order_product_table function completed.')
     
     except Exception as error:
         print(f'Error updating orders_products: {error}')
