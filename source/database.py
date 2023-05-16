@@ -45,7 +45,7 @@ def create_redshift_database_schema(cursor):
     create_orders_products_db_table(cursor)
     create_payment_types_db_table(cursor)
     create_products_db_table(cursor)
-    add_foreign_key_constraints(cursor)
+    #add_foreign_key_constraints(cursor)
 
 #-----------------------------------------------------------------------------
 
@@ -78,7 +78,9 @@ def create_orders_db_table(cursor):
         "location_id" integer NOT NULL,
         "transaction_total" numeric(10,2) NOT NULL,
         "payment_type_id" integer NOT NULL,
-        CONSTRAINT "orders_pkey" PRIMARY KEY ("order_id")
+        CONSTRAINT "orders_pkey" PRIMARY KEY ("order_id"),
+        CONSTRAINT "orders_location_id_fkey" FOREIGN KEY (location_id) REFERENCES locations(location_id) NOT DEFERRABLE,
+        CONSTRAINT "orders_payment_type_id_fkey" FOREIGN KEY (payment_type_id) REFERENCES payment_types(payment_type_id) NOT DEFERRABLE
     );
     """
 
@@ -98,7 +100,8 @@ def create_orders_products_db_table(cursor):
         CREATE TABLE IF NOT EXISTS "public"."orders_products" (
         "order_id" integer NOT NULL,
         "product_id" integer NOT NULL,
-        "product_price" numeric(10,2)
+        "product_price" numeric(10,2),
+        CONSTRAINT "orders_products_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(order_id) NOT DEFERRABLE
     );
     """
     
@@ -137,7 +140,8 @@ def create_products_db_table(cursor):
         CREATE TABLE IF NOT EXISTS "public"."products" (
         "product_id" int identity(1, 1),
         "product_name" VARCHAR(100),
-        CONSTRAINT "products_pkey" PRIMARY KEY ("product_id")
+        CONSTRAINT "products_pkey" PRIMARY KEY ("product_id"),
+        CONSTRAINT "orders_products_product_id_fkey" FOREIGN KEY (product_id) REFERENCES products(product_id) NOT DEFERRABLE
     );
     """
     
@@ -150,21 +154,21 @@ def create_products_db_table(cursor):
     
 #---------------------------------------------------------------------------
 
-def add_foreign_key_constraints(cursor):
-    alter_orders_foreign_keys = """
-        ALTER TABLE "public"."orders" ADD CONSTRAINT "orders_location_id_fkey" FOREIGN KEY (location_id) REFERENCES locations(location_id) NOT DEFERRABLE;
-        ALTER TABLE "public"."orders" ADD CONSTRAINT "orders_payment_type_id_fkey" FOREIGN KEY (payment_type_id) REFERENCES payment_types(payment_type_id) NOT DEFERRABLE;
-    """
+# def add_foreign_key_constraints(cursor):
+#     alter_orders_foreign_keys = """
+#         ALTER TABLE "public"."orders" ADD CONSTRAINT "orders_location_id_fkey" FOREIGN KEY (location_id) REFERENCES locations(location_id) NOT DEFERRABLE;
+#         ALTER TABLE "public"."orders" ADD CONSTRAINT "orders_payment_type_id_fkey" FOREIGN KEY (payment_type_id) REFERENCES payment_types(payment_type_id) NOT DEFERRABLE;
+#     """
     
-    alter_order_products_foreign_keys = """
-        ALTER TABLE "public"."orders_products" ADD CONSTRAINT "orders_products_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(order_id) NOT DEFERRABLE;
-        ALTER TABLE "public"."orders_products" ADD CONSTRAINT "orders_products_product_id_fkey" FOREIGN KEY (product_id) REFERENCES products(product_id) NOT DEFERRABLE;
-    """
+#     alter_order_products_foreign_keys = """
+#         ALTER TABLE "public"."orders_products" ADD CONSTRAINT "orders_products_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(order_id) NOT DEFERRABLE;
+#         ALTER TABLE "public"."orders_products" ADD CONSTRAINT "orders_products_product_id_fkey" FOREIGN KEY (product_id) REFERENCES products(product_id) NOT DEFERRABLE;
+#     """
     
-    print("Key constraints being created....")
-    cursor.execute(alter_orders_foreign_keys)
-    cursor.execute(alter_order_products_foreign_keys)
-    print("Constraints created successfully.")
+#     print("Key constraints being created....")
+#     cursor.execute(alter_orders_foreign_keys)
+#     cursor.execute(alter_order_products_foreign_keys)
+#     print("Constraints created successfully.")
    
 
 # call method
