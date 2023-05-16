@@ -18,9 +18,10 @@ def setup_db_connection(host,
                         user, 
                         password,
                         db,
-                        port):
+                        port,
+                        invocation_id):
     
-    print("Connecting to database....")
+    print(f"Connecting to database...., invocation_id = {invocation_id}")
     conn = psycopg2.connect(
         host = host,
         database = db,
@@ -28,7 +29,7 @@ def setup_db_connection(host,
         password = password,
         port = port
     )
-    print("Connection established.")
+    print(f"Connection established., invocation_id = {invocation_id}")
     return conn
 
 # call method
@@ -38,18 +39,19 @@ def setup_db_connection(host,
 
 # Used to call ALL DATABASE CREATE FUNCTIONS BELOW for Redshift:
 
-def create_redshift_database_schema(cursor):
+def create_redshift_database_schema(cursor, invocation_id):
     
-    create_locations_db_table(cursor)
-    create_orders_db_table(cursor)
-    create_orders_products_db_table(cursor)
-    create_payment_types_db_table(cursor)
-    create_products_db_table(cursor)
+    create_locations_db_table(cursor, invocation_id)
+    create_orders_db_table(cursor, invocation_id)
+    create_orders_products_db_table(cursor, invocation_id)
+    create_payment_types_db_table(cursor, invocation_id)
+    create_products_db_table(cursor, invocation_id)
+    cursor.connection.commit()
     #add_foreign_key_constraints(cursor)
 
 #-----------------------------------------------------------------------------
 
-def create_locations_db_table(cursor):
+def create_locations_db_table(cursor, invocation_id):
     
     create_locations_table = """
         CREATE TABLE IF NOT EXISTS "public"."locations" (
@@ -59,9 +61,9 @@ def create_locations_db_table(cursor):
     );
     """
     
-    print("'locations' table being created....")
+    print(f"'locations' table being created...., invocation_id = {invocation_id}")
     cursor.execute(create_locations_table)
-    print("Table created successfully.")
+    print(f"Table created successfully., invocation_id = {invocation_id}")
     
 
 # call method
@@ -69,7 +71,7 @@ def create_locations_db_table(cursor):
 
 #-------------------------------------
 
-def create_orders_db_table(cursor):
+def create_orders_db_table(cursor, invocation_id):
     
     create_orders_table = """
         CREATE TABLE IF NOT EXISTS "public"."orders" (
@@ -84,9 +86,9 @@ def create_orders_db_table(cursor):
     );
     """
 
-    print("'orders' table being created....")
+    print(f"'orders' table being created...., invocation_id = {invocation_id}")
     cursor.execute(create_orders_table)
-    print("Table created successfully.")
+    print(f"Table created successfully., invocation_id = {invocation_id}")
     
 
 # call method
@@ -94,7 +96,7 @@ def create_orders_db_table(cursor):
 
 #-------------------------------------
 
-def create_orders_products_db_table(cursor):
+def create_orders_products_db_table(cursor, invocation_id):
     
     create_orders_products_table = """
         CREATE TABLE IF NOT EXISTS "public"."orders_products" (
@@ -105,9 +107,9 @@ def create_orders_products_db_table(cursor):
     );
     """
     
-    print("'orders_products' database being created....")
+    print(f"'orders_products' database being created...., invocation_id = {invocation_id}")
     cursor.execute(create_orders_products_table)
-    print("Table created successfully.")
+    print(f"Table created successfully., invocation_id = {invocation_id}")
     
 
 # call method
@@ -115,7 +117,7 @@ def create_orders_products_db_table(cursor):
 
 #-------------------------------------------------------------------------------
 
-def create_payment_types_db_table(cursor):
+def create_payment_types_db_table(cursor, invocation_id):
     
     create_payment_types_table = """
         CREATE TABLE IF NOT EXISTS "public"."payment_types" (
@@ -125,16 +127,16 @@ def create_payment_types_db_table(cursor):
     );
     """
     
-    print("'payment_types' database being created....")
+    print(f"'payment_types' database being created...., invocation_id = {invocation_id}")
     cursor.execute(create_payment_types_table)
-    print("Table created successfully.")
+    print(f"Table created successfully., invocation_id = {invocation_id}")
     
 # call method
 #create_payment_types_db_table(conn)
     
 #-------------------------------------------------------------------------------
 
-def create_products_db_table(cursor):
+def create_products_db_table(cursor, invocation_id):
     
     create_products_table = """
         CREATE TABLE IF NOT EXISTS "public"."products" (
@@ -145,9 +147,9 @@ def create_products_db_table(cursor):
     );
     """
     
-    print("'products' table being created....")
+    print(f"'products' table being created...., invocation_id = {invocation_id}")
     cursor.execute(create_products_table)
-    print("Table created successfully.")  
+    print(f"Table created successfully., invocation_id = {invocation_id}")  
 
 # call method
 #create_products_db_table(conn)

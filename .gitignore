@@ -138,3 +138,6 @@ unittest.py
 
 #ssh key ignore
 brewed-awakening-key.pem 
+
+source
+!source/*.py
