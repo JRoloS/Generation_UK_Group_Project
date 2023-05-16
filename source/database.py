@@ -55,6 +55,7 @@ def create_locations_db_table(cursor):
         CREATE TABLE IF NOT EXISTS "public"."locations" (
         "location_id" int identity(1, 1),
         "location_name" VARCHAR(100) NOT NULL
+        CONSTRAINT "locations_pkey" PRIMARY KEY ("location_id")
     );
     """
     
