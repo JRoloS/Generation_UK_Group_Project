@@ -8,13 +8,16 @@ import logging
 #logger = logging.getLogger(__name__)
 
 def lambda_handler(event, context):
+    print(f"lambda_handler started: event = {event}, context = {context}")
     s3 = boto3.client('s3')
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
+    print(f'lambda_handler bucket = {bucket}, key = {key}')
     ssm_client = boto3.client('ssm')
     parameter_details = ssm_client.get_parameter(Name='brewed-awakening-redshift-settings')
     redshift_details = json.loads(parameter_details['Parameter']['Value'])
-    print(f'lambda_handler bucket = {bucket}, key = {key}')
+    print(f"lambda_handler redshift_details = {redshift_details['host']}")
+    
     try:
         response = s3.get_object(Bucket=bucket, Key=key)
         print(f'lambda_handler s3 response = {response}')
@@ -36,6 +39,8 @@ def lambda_handler(event, context):
                         password=redshift_details['password'],
                         db=redshift_details['database-name'],
                         port=redshift_details['port'])
+        
+        print('lambda_handler connection started..')
         
         cursor = conn.cursor()
         

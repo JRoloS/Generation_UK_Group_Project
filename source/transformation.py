@@ -15,7 +15,7 @@ def sanitise_csv_order_table(raw_csv):
         print('sanitise_csv_order_table function completed.')
 
     except FileNotFoundError as fnfe:
-        print(f'File not found: {fnfe}')
+        print(f'sanitise_csv_order_table function, File not found: {fnfe}')
 
     return sanitised_df
 
@@ -29,7 +29,7 @@ def sort_time_to_postgre_format(df):
         print('sort_time_to_postgre_format function completed.')
         
     except Exception as error:
-        print(f'Error changing date/time format: {error}')
+        print(f'sort_time_to_postgre_format function error changing date/time format: {error}')
     
     return df
 
@@ -63,7 +63,7 @@ def update_locations(sanitised_df, cursor):
         return sanitised_df
 
     except Exception as error:
-        print(f'Error updating locations: {error}')
+        print(f'update_locations function error updating locations: {error}')
 
 #-------------------------------------------------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ def update_payment_types(sanitised_df, cursor):
         return sanitised_df
     
     except Exception as error:
-        print(f'Error updating payment_types: {error}')
+        print(f'update_payment_types function error updating payment_types: {error}')
 
 
 
@@ -120,7 +120,7 @@ def update_orders_table(sanitised_df, cursor):
         print('update_orders_table function completed.')
         
     except Exception as error:
-        print(f'Error orders: {error}')
+        print(f'update_orders_table function error orders: {error}')
 
 #-------------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ def sanitise_csv_for_products(raw_csv):
         print('sanitise_csv_for_products function completed.')
 
     except FileNotFoundError as fnfe:
-        print(f'File not found: {fnfe}')
+        print(f'sanitise_csv_for_products function, File not found: {fnfe}')
 
     return sanitised_df
 
@@ -172,7 +172,7 @@ def update_product_table(sanitised_df, cursor):
         print('update_product_table function completed.')
         
     except Exception as error:
-        print(f'Error updating products: {error}')
+        print(f'update_product_table function error updating products: {error}')
     
 #------------------------------------------------------------------------------------------
 
@@ -211,5 +211,5 @@ def update_order_product_table(sanitised_df, cursor):
         print('update_order_product_table function completed.')
     
     except Exception as error:
-        print(f'Error updating orders_products: {error}')
+        print(f'update_order_product_table function error updating orders_products: {error}')
  
