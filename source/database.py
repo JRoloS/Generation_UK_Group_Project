@@ -59,9 +59,9 @@ def create_locations_db_table(cursor):
     );
     """
     
-    print("'locations' table being created....")
+    #print("'locations' table being created....")
     cursor.execute(create_locations_table)
-    print("Table created successfully.")
+    #print("Table created successfully.")
     
 
 # call method
@@ -84,9 +84,9 @@ def create_orders_db_table(cursor):
     );
     """
 
-    print("'orders' table being created....")
+    #print("'orders' table being created....")
     cursor.execute(create_orders_table)
-    print("Table created successfully.")
+    #print("Table created successfully.")
     
 
 # call method
@@ -105,9 +105,9 @@ def create_orders_products_db_table(cursor):
     );
     """
     
-    print("'orders_products' database being created....")
+    #print("'orders_products' database being created....")
     cursor.execute(create_orders_products_table)
-    print("Table created successfully.")
+    #print("Table created successfully.")
     
 
 # call method
@@ -125,9 +125,9 @@ def create_payment_types_db_table(cursor):
     );
     """
     
-    print("'payment_types' database being created....")
+    #print("'payment_types' database being created....")
     cursor.execute(create_payment_types_table)
-    print("Table created successfully.")
+    #print("Table created successfully.")
     
 # call method
 #create_payment_types_db_table(conn)
@@ -145,9 +145,9 @@ def create_products_db_table(cursor):
     );
     """
     
-    print("'products' table being created....")
+    #print("'products' table being created....")
     cursor.execute(create_products_table)
-    print("Table created successfully.")  
+    #print("Table created successfully.")  
 
 # call method
 #create_products_db_table(conn)
