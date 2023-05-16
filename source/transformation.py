@@ -51,13 +51,14 @@ def update_locations(sanitised_df, cursor, invocation_id):
             # If the location name is not in the table, insert it and update the associated column within the dataframe with the returned location_id
             if result is None:
                 cursor.execute("INSERT INTO locations (location_name) VALUES (%s)", (name,))
+                cursor.connection.commit()
                 cursor.execute("SELECT location_id FROM locations WHERE location_name = (%s)", (name,))
                 location_id = cursor.fetchone()[0]
             else:
                 location_id = result[0]
                 
             sanitised_df.loc[sanitised_df['location'] == name, 'location'] = location_id
-
+        
         print(f'update_locations function completed. invocation_id = {invocation_id}')
 
         return sanitised_df
@@ -83,6 +84,7 @@ def update_payment_types(sanitised_df, cursor, invocation_id):
             # If the payment name is not in the table, insert it
             if result is None:
                 cursor.execute("INSERT INTO payment_types (payment_name) VALUES (%s)", (name,))
+                cursor.connection.commit()
                 cursor.execute("SELECT payment_type_id FROM payment_types WHERE payment_name = (%s)", (name,))
                 payment_type_id = cursor.fetchone()[0]
             else:
@@ -116,7 +118,8 @@ def update_orders_table(sanitised_df, cursor, invocation_id):
             
             # Check if the order already exists in the table
             cursor.execute("INSERT INTO orders (date_time, location_id, transaction_total, payment_type_id) VALUES (%s, %s, %s, %s)", (date_time, location, transaction_total, payment_type))
-
+            cursor.connection.commit()
+            
         print(f'update_orders_table function completed., invocation_id = {invocation_id}')
         
     except Exception as error:
@@ -167,8 +170,10 @@ def update_product_table(sanitised_df, cursor, invocation_id):
                 if result is None:
                     # If the product does not exist, insert it into the table
                     cursor.execute("INSERT INTO products (product_name) VALUES (%s)", (product_name,))
-                    cursor.execute("SELECT product_id FROM products WHERE product_name = (%s)", (product_name,))
-    
+                    cursor.connection.commit()
+                    # cursor.execute("SELECT product_id FROM products WHERE product_name = (%s)", (product_name,))
+                    # result = cursor.fetchone()
+
         print(f'update_product_table function completed., invocation_id = {invocation_id}')
         
     except Exception as error:
@@ -207,6 +212,7 @@ def update_order_product_table(sanitised_df, cursor, invocation_id):
                 product_id = product_id_dict[product_name]
                 # Insert the order_id, product_id, and product_price into the "orders_products" table
                 cursor.execute("INSERT INTO orders_products (order_id, product_id, product_price) VALUES (%s, %s, %s)", (order_id, product_id, product_price))
+                cursor.connection.commit()
         
         print(f'update_order_product_table function completed., invocation_id = {invocation_id}')
     

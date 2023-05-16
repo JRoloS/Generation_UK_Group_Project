@@ -39,7 +39,8 @@ def lambda_handler(event, context):
                         user=redshift_details['user'], 
                         password=redshift_details['password'],
                         db=redshift_details['database-name'],
-                        port=redshift_details['port'])
+                        port=redshift_details['port'],
+                        invocation_id=invocation_id)
         
         print(f'lambda_handler connection started.. invocation_id = {invocation_id}')
         
@@ -47,7 +48,7 @@ def lambda_handler(event, context):
         
         #[!] This function runs all database table create functions from "database.py" and if the tables already exist then will not overwrite: 
         
-        create_redshift_database_schema(cursor, invocation_id)
+        #create_redshift_database_schema(cursor, invocation_id)
 
 #-------ETL PIPELINE BELOW--------------------------------------------------------------------------
 

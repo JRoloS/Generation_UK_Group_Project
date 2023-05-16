@@ -46,6 +46,7 @@ def create_redshift_database_schema(cursor, invocation_id):
     create_orders_products_db_table(cursor, invocation_id)
     create_payment_types_db_table(cursor, invocation_id)
     create_products_db_table(cursor, invocation_id)
+    cursor.connection.commit()
     #add_foreign_key_constraints(cursor)
 
 #-----------------------------------------------------------------------------

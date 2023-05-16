@@ -24,7 +24,7 @@ Resources:
       Timeout: 300
       Code:
         S3Bucket: brewed-awakening-deployment-bucket
-        S3Key: 376cb578e166cd91d70d02c9e1d21714
+        S3Key: 1be79c91552099832c849dfec756f8ca
       VpcConfig:
         SecurityGroupIds:
         - Ref: SecurityGroupId
