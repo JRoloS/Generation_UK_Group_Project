@@ -8,7 +8,7 @@ import logging
 #logger = logging.getLogger(__name__)
 
 def lambda_handler(event, context):
-    invocation_id = context['aws_request_id']
+    invocation_id = context.aws_request_id
     print(f"lambda_handler started: invocation_id = {invocation_id}")
     s3 = boto3.client('s3')
     bucket = event['Records'][0]['s3']['bucket']['name']
