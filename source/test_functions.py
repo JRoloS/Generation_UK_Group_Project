@@ -18,23 +18,23 @@ import csv
 ############################   ABSOLUTE LOCAL PATH  ###########################
 
 # [1/1] ---- Unit Test for RawData Path --------------------
-# from absolute_local_path import absolute_path_for_raw_data #NOTE: This one will be removed when moving to Lambdas 
+from absolute_local_path import absolute_path_for_raw_data #NOTE: This one will be removed when moving to Lambdas 
 
-# def test_absolute_path_for_raw_data():
-#      raw_data_file = "chesterfield_25-08-2021_09-00-00.csv"
-#      raw_csv = absolute_path_for_raw_data(raw_data_file)
-#      expected_csv_path = os.path.abspath("./raw_data") + "\\" + raw_data_file
-#      assert raw_csv == expected_csv_path
+def test_absolute_path_for_raw_data():
+     raw_data_file = "chesterfield_25-08-2021_09-00-00.csv"
+     raw_csv = absolute_path_for_raw_data(raw_data_file)
+     expected_csv_path = os.path.abspath("./raw_data") + "\\" + raw_data_file
+     assert raw_csv == expected_csv_path
     
-# test_absolute_path_for_raw_data()
-# # [1/1] ---- [end] Unit Test for RawData Path ----------------
-# ############################### END ABSOLUTE LOCAL PATH ########################
+test_absolute_path_for_raw_data()
+# [1/1] ---- [end] Unit Test for RawData Path ----------------
+############################### END ABSOLUTE LOCAL PATH ########################
 
 
 
-# ############################## DATABASE #######################################
+############################## DATABASE #######################################
 
-# # [1/7] ---- Unit test for setup_db_connection ------------------
+# [1/7] ---- Unit test for setup_db_connection ------------------
 # from database import setup_db_connection
 
 # class TestSetupDbConnection(unittest.TestCase):
