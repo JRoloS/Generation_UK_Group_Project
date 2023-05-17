@@ -274,38 +274,37 @@ class TestUpdateLocations(unittest.TestCase):
             # Check print statements
             mock_print.assert_any_call(f"update_locations function started.., invocation_id = {invocation_id}")
             mock_print.assert_any_call(f"update_locations function completed. invocation_id = {invocation_id}")
-
-
 # # [4/8] [end] --- Update Payment Types ---
 
 # #[5/8] --- Unit test for Update Orders Table ---
-# from transformation import update_orders_table
+from transformation import update_orders_table
 
-# class TestUpdateOrdersTable(unittest.TestCase):
-    
-#     def test_update_orders_table(self):
-#         # Define mock data
-#         mock_df = pd.DataFrame({
-#             'date_time': ['2022-05-10 12:34:56', '2022-05-11 14:20:00', '2022-05-11 15:30:00'],
-#             'location': [1, 2, 3],
-#             'transaction_total': [10.0, 20.0, 30.0],
-#             'payment_type': [1, 2, 3]
-#         })
-#         mock_cursor = Mock()
+class TestUpdateOrdersTable(unittest.TestCase):
+    def test_update_orders_table(self):
+        with patch("builtins.print") as mock_print:
+            # Define mock data
+            mock_df = pd.DataFrame({
+                'date_time': ['2022-05-10 12:34:56'],
+                'location': [1],
+                'transaction_total': [10.0],
+                'payment_type': [1]
+            })
+            mock_cursor = Mock()
 
-#         # Call the function
-#         update_orders_table(mock_df, mock_cursor)
+            # Call the function
+            invocation_id = "12345"
+            update_orders_table(mock_df, mock_cursor, invocation_id)
 
-#         # Check that the correct SQL statements were executed
-#         expected_calls = [
-#             call("INSERT INTO orders (date_time, location_id, transaction_total, payment_type_id) VALUES (%s, %s, %s, %s)",
-#                  ('2022-05-10 12:34:56', 1, 10.0, 1)),
-#             call("INSERT INTO orders (date_time, location_id, transaction_total, payment_type_id) VALUES (%s, %s, %s, %s)",
-#                  ('2022-05-11 14:20:00', 2, 20.0, 2)),
-#             call("INSERT INTO orders (date_time, location_id, transaction_total, payment_type_id) VALUES (%s, %s, %s, %s)",
-#                  ('2022-05-11 15:30:00', 3, 30.0, 3))
-#         ]
-#         self.assertEqual(mock_cursor.execute.call_args_list, expected_calls)
+            # Check that the correct SQL statements were executed
+            expected_calls = [
+                call("INSERT INTO orders (date_time, location_id, transaction_total, payment_type_id) VALUES (%s, %s, %s, %s)",
+                     ('2022-05-10 12:34:56', 1, 10.0, 1)),
+            ]
+            self.assertEqual(mock_cursor.execute.call_args_list, expected_calls)
+
+            # Check print statements
+            mock_print.assert_any_call(f"update_orders_table function started.., invocation_id = {invocation_id}")
+            mock_print.assert_any_call(f"update_orders_table function completed., invocation_id = {invocation_id}")
 
 #[5/8] [End] --- Test update orders table ----
 
