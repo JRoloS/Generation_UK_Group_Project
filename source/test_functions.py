@@ -104,10 +104,6 @@ class TestCreateRedshiftDatabaseSchema(unittest.TestCase):
 # # [2/7] ------ [end] Unit Test for create_redshift_database_schema -----------------------------------------
 
 
-# [3/7] --- Unit test for create locations db table
-from database import create_locations_db_table
-
-
 # ######################## END DATABASE #######################################
 
 
@@ -160,7 +156,6 @@ class TestSanitiseCsvOrderTable(unittest.TestCase):
 # # [2/8] ---- Unit test for sort_time_to_postgre_format (We have to be sure that the expected format is YYYY-MM-DD)
 from transformation import sort_time_to_postgre_format
 
-from transformation import sort_time_to_postgre_format
 
 def test_sort_time_to_postgre_format():
     with patch("builtins.print") as mock_print:
@@ -192,8 +187,6 @@ def test_sort_time_to_postgre_format():
 
 
 # # [3/8] --- Unit test for Update Locations ---
-from transformation import update_locations
-
 from transformation import update_locations
 
 class TestUpdateLocations(unittest.TestCase):
@@ -343,12 +336,6 @@ class TestSanitiseCSVForProducts(unittest.TestCase):
 
 from transformation import update_order_product_table
 
-import unittest
-from unittest.mock import MagicMock, patch
-import pandas as pd
-
-from transformation import update_order_product_table
-
 # The test function with the necessary changes
 class TestUpdateOrderProductTable(unittest.TestCase):
 
@@ -388,5 +375,37 @@ class TestUpdateOrderProductTable(unittest.TestCase):
         self.assertEqual(len(actual_calls), len(expected_calls))
         for i, (expected_call, expected_result) in enumerate(expected_calls):
             self.assertEqual(actual_calls[i], expected_call)
+
+# [7/8] [end] Unit test for update order product table
+
+#[8/8] Unit Test for Update orders table
+from transformation import sanitise_csv_for_products
+
+class TestSanitiseCsvForProducts(unittest.TestCase):
+
+    @patch('transformation.print')
+    def test_sanitise_csv_for_products(self, mock_print):
+        # Define the raw CSV data
+        raw_csv = b'date_time,location,full_name,order,transaction_total,payment_type,card_number\n2022-01-01 09:00:00,Location A,John Doe,Product A,10.99,Credit Card,1234-5678-9012\n2022-01-01 10:00:00,Location B,Jane Smith,Product B,15.99,Cash,9876-5432-1098\n'
+
+        # Call the function
+        result = sanitise_csv_for_products(raw_csv, invocation_id='12345')
+
+        # Assert that the function executed successfully
+        self.assertIsNotNone(result)
+
+        # Assert that the print statements were called correctly
+        mock_print.assert_called_with("sanitise_csv_for_products function completed., invocation_id = 12345")
+
+        # Assert the content of the returned DataFrame
+        expected_columns = ['date_time', 'location', 'order', 'transaction_total', 'payment_type']
+        expected_data = [
+            ['2022-01-01 09:00:00', 'Location A', 'Product A', 10.99, 'CARD'],
+            ['2022-01-01 10:00:00', 'Location B', 'Product B', 15.99, 'CASH']
+        ]
+        expected_df = pd.DataFrame(expected_data, columns=expected_columns,)
+
+#[8/8] [end] Unit Test for Update orders table
+
 
 ############################ END TRANSFORMATION #############################################
