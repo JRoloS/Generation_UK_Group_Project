@@ -24,27 +24,45 @@ During Week 6, we will focus on refining and polishing the code while adding any
 **UNLIKE:** Their old system of using CSVs<br />
 **OUR PRODUCT:** Will allow them to make sense of their data and spot trends more efficiently as well as solves the problem of data inconsistencies and inaccuracies.<br />
 
+## Built With
 
+The Brewed Awakening project was built using a combination of technologies, including:
+* Python 3
+* Jupyter Notebook for individual function testing 
+* AWS Lambda for severless computing
+* PostgreSQL for the local test Database
+* CloudWatch Metrics and logs were collected from multiple sources including AWS S3 buckets. 
+* Grafana for data visualisation.
 
 ## Installation Instructions
 
-This section is a step-by-step guide on how to install and set up the project, including any dependencies or prerequisites required for our project.
+This section is a step-by-step guide on how to install and set up the main platforms used for the project.
 
 * Install Python 3 on VS Code. This can be downloaded from the official website [here](https://www.python.org/downloads/) and follow the installation instructions. Once Python 3 is installed, make sure it's added to the system's PATH environment variable.
+
+* Install Docker on your local machine. This can be downloaded from the official website [here](https://www.docker.com//) and follow the installation instructions.
 
 * Set up AWS. We will create an AWS account and set up an S3 bucket to store the project files. Follow the AWS documentation to create an S3 bucket and obtain an access key ID and secret access key.
 
 * Set up Grafana. We'll need to download and install Grafana on our local machine. Once Grafana is installed, open a browser and navigate to http://localhost:3000 to access the Grafana dashboard. Log in with the default username and password (admin/admin).
 
-* Clone the project repository. Use Git to clone the project repository to your local machine.
-Install project dependencies. 
+* Clone the project repository [here](https://github.com/generation-de-lon9/brewed-awakening-final-project). Use Git to clone ```git clone git@github.com:generation-de-lon9/brewed-awakening-final-project.git ``` the project repository to your local machine.
 
-* Navigate to the project directory and run the following command to install the project dependencies:
+* Install project dependencies by navigating to the project directory and running the following command to install the project dependencies:
+
 ```
 pip install -r requirements.txt
 ```
+* Change the `docker-compose.yml` variables for `POSTGRES_USER:, POSTGRES_PASSWORD:, POSTGRES_DB:` to your specific choices.
+* Set up environment variables. Create a new file named `.env` in the project directory and add the following environment variables:
+```
+sql_host=localhost
+sql_user=[SAME AS IN .YML FILE]
+sql_pass=[SAME AS IN .YML FILE]
+sql_db=[SAME AS IN .YML FILE]
+sql_port=5432
+```
 
-Set up environment variables. Create a new file named `.env` in the project directory and add the following environment variables:
 ```
 AWS_ACCESS_KEY_ID=your_access_key_id
 AWS_SECRET_ACCESS_KEY=your_secret_access_key
@@ -53,29 +71,24 @@ GRAFANA_API_KEY=your_grafana_api_key
 Replace `your_access_key_id`, `your_secret_access_key`, and `your_grafana_api_key` with your actual values.
 
 
+
 ## Configuration
 
 This section provides information on how to customize the project to meet the specific needs. This section may include details on how to modify settings, configure options, or adjust parameters to optimize the project. By providing clear and concise instructions on how to configure the project, we can help users get the most out of the software and ensure that it meets their unique requirements.
 
 
-### **Database Schema**
-
-*Please insert image*
-
-### **Lambda Schema**
-
-*Please insert image*
-
-### **Setting up the Database**
+### **Setting up the local Database for testing**
 
 * Choose a database management system (DBMS) e.g. MySQL, PostgreSQL.
-* Install the DBMS on your computer. For the Brewed Awakening Project we have chosen to use Adminer SQL. [Why?](#why-adminer-sql)
-* Create a new database for the project using the GUI Interface.
-* Create the necessary tables for the project and define the schema for each table including: Column names,
-data types and any constraints.
-* Add any necessary indexes to the tables created. This can improve the performance of any queries by allowing the adbms to quickly locate the data you're looking for.
-* Write any necessary scripts to populate the database and to insert data into tables.
-* Test the database setup to ensure everything is running smoothly. Run queries against the database using Adminer SQL commands that retrieve, modify or delete data in the database.
+* Install the DBMS on your computer. For the Brewed Awakening Project we have chosen to use Adminer SQL for our local testing. [Why?](#why-adminer-sql)
+* Time to spin-up the docker container on your local testing machine, first change your directory into the "docker_setup" folder, then run this command:
+```
+docker compose up -d 
+```
+* You should then see a docker container ready with two sub containers for the GUI for adminer(8080:8080) and for the internal PostgreSQL database(5432:5432):
+<p align="center"><img src="docker container image.png" width="175" height="175" /></p>
+
+* You can then navigate to http://localhost:8080 to log in and interact with your database.
 
 
 ### **Configuring the Database connection**
@@ -83,16 +96,25 @@ data types and any constraints.
 To configure the database connection using Adminer SQL, you'll need to follow these steps:
 
 * Open your web browser and navigate to the Adminer SQL login page.
-* Enter the database server hostname, port number, username, and password.
-For example, if you're running a local database server on port 8080, you might enter `localhost:8080` for the hostname and port number.
+* Change the "system" tab from `MYSQL` to `PostgreSQL`. 
+* Enter the database server hostname, port number, username, and password (same used in the `docker-compose.yml` and `.env` files).
 * Click the "Login" button to log in to the database server.
 
 Once you've logged in to the database server, you should be able to create, edit, and delete databases and tables using the Adminer SQL interface.
 
+* The quickest and easiest way to set-up our exact database schema would involve finding the `import` button in the main select database page. 
+* Once on the import page, click `choose files`, navigate to the same directory the local repository is located and find the `BA-Final-Schema.sql` file and upload. 
+* Lastly, click `Execute` to create all tables and foreign key constraints instantly, you should end up with the schema below.
+
+### **Database Schema**
+
+<p align="center"><img src="Documentation/schema.png" width="475" height="325" /></p>
 
 ### **Customising the Data Schema**
 
 Super-Cafe's data schema can be customized to meet your specific needs. To do this, you'll need to modify the database tables using Adminer SQL. Here's how to add or remove tables and modify the data types of existing fields:
+
+
 
 #### **Adding a Table**
 
@@ -134,25 +156,17 @@ To add a one-to-many relationship between two tables in the database, follow the
    REFERENCES customers(customer_id);
    ```
    
+### **AWS Lambda Schema**
+
+The ETL will be contained within one lambda hosted within AWS. A trigger will be set to initiate the lambda whenever a new 'S3 object creation' event occurs, works through the sanitisation/transformation/normalisation stages while values are inserted into the Redshift database. Below is a visual represeantion of the lambda:
+
+<p align="center"><img src="Documentation/ba lambda diagram.png" width="475" height="275" /></p>
 
 ## Usage
 
 This section provides instructions on how to use the project, including any dependencies or prerequisites required for the project, as well as examples and code snippets. 
 This section is designed to help users quickly get up and running with the project, and to provide guidance on how to use the project's features and functionality. 
 
-
-### **Template for Help or Code**
-
-Any explanation that needs code snippets should be posted like this.
-
-```
-Everything inside the quotes will look like this... will be used for instructions, code etc... 
-```
-
-### **Template for Bullet point list**
-
-* To use Bullet points is just add an * before the text
-* New lines that start with * will be bullet points
 
 
 ### **Navigating Directories**
@@ -205,7 +219,7 @@ Here are some common commands used to navigate directories in the terminal:
 
 ### **Executing deployment files**
 
-To your branch into AWS you can use the following steps:
+To deploy changes from your current local branch into AWS you can use the following steps:
 
 ```
 ./deploy_aws_windows.sh <profile-name> # For windows systems
@@ -226,28 +240,11 @@ We preferred to use Adminer SQL for our Brewed Awakening project, over other dat
 
 ## Authors
 
-* Jorge Rolo
-* Mohamed Shafie
-* Sadat Awuma 
-* Saleem Mustafa
-* Shekinah Kimvuidi
-
-
-## Version History
-
-* 0.1.01
-    * Jupyter Notebook with local CSV handling functions added
-* 0.1
-    * Initial Release
-
-
-## Built With
-
-The Brewed Awakening project was built using a combination of technologies, including:
-* Python 3 for back-end 
-* AWS Lambda for severless computing
-* SQL For the Database
-* Metrics and logs were collected from multiple sources including AWS S3 buckets, and displayed using Grafana dashboards.
+* [Jorge Rolo](https://github.com/rolojorge)
+* [Mohamed Shafie](https://github.com/mashafie)
+* [Sadat Awuma](https://github.com/SadCodeBleach) 
+* [Saleem Mustafa](https://github.com/sm321000)
+* [Shekinah Kimvuidi](https://github.com/shekinah001)
 
 
 ## Acknowledgments
