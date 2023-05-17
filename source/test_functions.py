@@ -158,23 +158,37 @@ class TestSanitiseCsvOrderTable(unittest.TestCase):
 # # [1/8] ------ [end] TEST sanatise_csv_order_table ------------------------
 
 # # [2/8] ---- Unit test for sort_time_to_postgre_format (We have to be sure that the expected format is YYYY-MM-DD)
-# from transformation import sort_time_to_postgre_format
+from transformation import sort_time_to_postgre_format
 
-# def test_sort_time_to_postgre_format():
-    
-#     # create mock dataframe
-#     data = {'date_time': ['30/12/2020 09:00'],
-#             'location': ['London'],
-#             'transaction_total': [10.0]}
-#     df = pd.DataFrame(data)
+from transformation import sort_time_to_postgre_format
 
-#     # call function with mock dataframe
-#     sorted_df = sort_time_to_postgre_format(df)
+def test_sort_time_to_postgre_format():
+    with patch("builtins.print") as mock_print:
+        # Create mock dataframe
+        data = {
+            'date_time': ['30/12/2020 09:00'],
+            'location': ['London'],
+            'transaction_total': [10.0]
+        }
+        df = pd.DataFrame(data)
 
-#     # check if dataframe was sorted correctly
-#     expected_datetime_str = '2020-12-30 09:00:00'
-#     expected_datetime = pd.to_datetime(expected_datetime_str, format='%Y-%m-%d %H:%M:%S')
-#     assert sorted_df['date_time'].iloc[0] == expected_datetime
+        # Define the expected datetime string and datetime object
+        expected_datetime_str = '2020-12-30 09:00:00'
+        expected_datetime = pd.to_datetime(expected_datetime_str, format='%Y-%m-%d %H:%M:%S')
+
+        # Call the function with the mock dataframe
+        invocation_id = "12345"
+        sorted_df = sort_time_to_postgre_format(df, invocation_id)
+
+        # Check if the dataframe was sorted correctly
+        assert sorted_df['date_time'].iloc[0] == expected_datetime
+
+        # Check print statements
+        mock_print.assert_any_call(f"sort_time_to_postgre_format function started.. , invocation_id = {invocation_id}")
+        mock_print.assert_any_call(f"sort_time_to_postgre_format function completed. , invocation_id = {invocation_id}")
+
+
+
 # # [2/8] --- [end] Unit test for sort_time_to_postgre_format ---------------------------------------
 
 
