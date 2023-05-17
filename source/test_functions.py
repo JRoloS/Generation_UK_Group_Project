@@ -337,5 +337,56 @@ class TestSanitiseCSVForProducts(unittest.TestCase):
             mock_print.assert_any_call(f"sanitise_csv_for_products function started.., invocation_id = {invocation_id}")
             mock_print.assert_any_call(f"sanitise_csv_for_products function completed., invocation_id = {invocation_id}")
 
+# [6/8] [end] Sanatise csv for products
+
+# [7/8] Unit test for update order product table
+
+from transformation import update_order_product_table
+
+import unittest
+from unittest.mock import MagicMock, patch
+import pandas as pd
+
+from transformation import update_order_product_table
+
+# The test function with the necessary changes
+class TestUpdateOrderProductTable(unittest.TestCase):
+
+    @patch('transformation.print')
+    def test_update_order_product_table(self, mock_print):
+        # Define mock data
+        mock_df = pd.DataFrame({
+            'order': ['Product A - Flavor 1 - 10.99, Product B - 15.99', 'Product C - 20.99']
+        })
+
+        # Set up the mock return values for cursor.fetchone
+        mock_cursor = MagicMock()
+        mock_cursor.fetchone.side_effect = [
+            (3,),  # Max order_id
+            [('Product A - Flavor 1', 1), ('Product B', 2), ('Product C', 3)]  # product_id_dict
+        ]
+
+        # Call the function
+        update_order_product_table(mock_df, mock_cursor, invocation_id='12345')
+
+        # Check that the correct SQL statements were executed
+        expected_calls = [
+            # Expected SELECT statement and result for MAX(order_id)
+            (
+                call("SELECT MAX(order_id) FROM orders_products"),
+                (3,)
+            ),
+            # Expected SELECT statement and result for product_name and product_id
+            (
+                call("SELECT product_name, product_id FROM products"),
+                [('Product A - Flavor 1', 1), ('Product B', 2), ('Product C', 3)]
+            ),
+        ]
+
+        # Check that the correct SQL statements were executed
+        actual_calls = mock_cursor.execute.call_args_list
+        self.assertEqual(len(actual_calls), len(expected_calls))
+        for i, (expected_call, expected_result) in enumerate(expected_calls):
+            self.assertEqual(actual_calls[i], expected_call)
 
 ############################ END TRANSFORMATION #############################################
