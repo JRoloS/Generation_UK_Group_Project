@@ -135,5 +135,9 @@ results/
 
 #Ignore list
 unittest.py
-brewed-awakening-key.pem
 
+#ssh key ignore
+brewed-awakening-key.pem 
+
+source
+!source/*.py
