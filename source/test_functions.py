@@ -35,37 +35,41 @@ test_absolute_path_for_raw_data()
 ############################## DATABASE #######################################
 
 # [1/7] ---- Unit test for setup_db_connection ------------------
-# from database import setup_db_connection
+from database import setup_db_connection
 
-# class TestSetupDbConnection(unittest.TestCase):
-#     @patch("psycopg2.connect")
-#     def test_setup_db_connection(self, mock_connect):
-#         mock_connection = Mock()
-#         mock_connect.return_value = mock_connection
 
-#         host = "localhost"
-#         user = "testuser"
-#         password = "testpass"
-#         database = "testdb"
-#         port = "1234"
+class TestSetupDbConnection(unittest.TestCase):
+    @patch("database.psycopg2.connect")  # Update the patched import path
+    def test_setup_db_connection(self, mock_connect):
+        mock_connection = Mock()
+        mock_connect.return_value = mock_connection
 
-#         conn = setup_db_connection(
-#             host=host, 
-#             user=user, 
-#             password=password, 
-#             db=database, 
-#             port=port
-#         )
+        host = "localhost"
+        user = "testuser"
+        password = "testpass"
+        database = "testdb"
+        port = "1234"
+        invocation_id = "12345"  # Add the invocation_id
 
-#         mock_connect.assert_called_once_with(
-#             host=host,
-#             database=database,
-#             user=user,
-#             password=password,
-#             port=port
-#         )
+        conn = setup_db_connection(
+            host=host,
+            user=user,
+            password=password,
+            db=database,
+            port=port,
+            invocation_id=invocation_id,  # Pass the invocation_id
+        )
 
-#         self.assertEqual(conn, mock_connection)
+        mock_connect.assert_called_once_with(
+            host=host,
+            database=database,
+            user=user,
+            password=password,
+            port=port,
+        )
+
+        self.assertEqual(conn, mock_connection)
+
 # # [1/7] ---- [end] Unit test for setup_db_connection -----------------
 
 
