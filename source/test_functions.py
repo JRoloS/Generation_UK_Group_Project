@@ -74,25 +74,32 @@ class TestSetupDbConnection(unittest.TestCase):
 
 
 # # [2/7] ------ Unit Test for create_redshift_database_schema ------------------------------------------
-# from database import create_redshift_database_schema
+from database import create_redshift_database_schema
 
-# # class TestCreateRedshiftDatabaseSchema(unittest.TestCase):
-# #     @patch("database.create_locations_db_table")
-# #     @patch("database.create_orders_db_table")
-# #     @patch("database.create_orders_products_db_table")
-# #     @patch("database.create_payment_types_db_table")
-# #     @patch("database.create_products_db_table")
-# #     @patch("database.add_foreign_key_constraints")
-# #     def test_create_redshift_database_schema(self, mock_fk, mock_products, mock_payment_types, mock_orders_products, mock_orders, mock_locations):
-# #         mock_cursor = Mock()
-# #         create_redshift_database_schema(mock_cursor)
+class TestCreateRedshiftDatabaseSchema(unittest.TestCase):
+    @patch("database.create_locations_db_table")
+    @patch("database.create_orders_db_table")
+    @patch("database.create_orders_products_db_table")
+    @patch("database.create_payment_types_db_table")
+    @patch("database.create_products_db_table")
+    @patch("psycopg2.extensions.cursor")
+    def test_create_redshift_database_schema(self, mock_cursor, mock_products, mock_payment_types, mock_orders_products, mock_orders, mock_locations):
+        # Set up mock objects
+        mock_conn = Mock()
+        mock_cursor.return_value = mock_conn
+        mock_cursor.connection = mock_conn
 
-# #         mock_locations.assert_called_once_with(mock_cursor)
-# #         mock_orders.assert_called_once_with(mock_cursor)
-# #         mock_orders_products.assert_called_once_with(mock_cursor)
-# #         mock_payment_types.assert_called_once_with(mock_cursor)
-# #         mock_products.assert_called_once_with(mock_cursor)
-# #         mock_fk.assert_called_once_with(mock_cursor)
+        invocation_id = "12345"
+
+        create_redshift_database_schema(mock_cursor, invocation_id)
+
+        # Assert function calls and commit
+        mock_locations.assert_called_once_with(mock_cursor, invocation_id)
+        mock_orders.assert_called_once_with(mock_cursor, invocation_id)
+        mock_orders_products.assert_called_once_with(mock_cursor, invocation_id)
+        mock_payment_types.assert_called_once_with(mock_cursor, invocation_id)
+        mock_products.assert_called_once_with(mock_cursor, invocation_id)
+        mock_conn.commit.assert_called_once()
 
 # # [2/7] ------ [end] Unit Test for create_redshift_database_schema -----------------------------------------
 
