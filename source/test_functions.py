@@ -236,38 +236,46 @@ class TestUpdateLocations(unittest.TestCase):
 
 
 # # [4/8] --- Update Payment Types ----
-# from transformation import update_payment_types
+from transformation import update_payment_types
+
+from transformation import update_locations
+
+class TestUpdateLocations(unittest.TestCase):
+    def test_update_locations(self):
+        with patch("builtins.print") as mock_print:
+            # Create a sample DataFrame with London as a location
+            df = pd.DataFrame({
+                'date_time': ['2022-05-09 13:00:00'],
+                'location': ['London'],
+                'transaction_total': [2.40],
+                'payment_type': ['CARD']
+            })
+
+            # Set up a mock cursor object that returns location IDs
+            mock_cursor = MagicMock()
+            mock_cursor.fetchone.side_effect = [(1,), None]
+            # It will mock the insert and return 1 as the location already exists in the DB
+
+            # Call the function to get the actual result
+            invocation_id = "12345"
+            actual_result = update_locations(df, mock_cursor, invocation_id)
+
+            # Check that the location names have been replaced with location IDs
+            expected_result = pd.DataFrame({
+                'date_time': ['2022-05-09 13:00:00'],
+                'location': [1],
+                'transaction_total': [2.40],
+                'payment_type': ['CARD']
+            })
+
+            # Check that the shape of the DataFrames is the same
+            self.assertEqual(actual_result.shape, expected_result.shape)
+
+            # Check print statements
+            mock_print.assert_any_call(f"update_locations function started.., invocation_id = {invocation_id}")
+            mock_print.assert_any_call(f"update_locations function completed. invocation_id = {invocation_id}")
 
 
-# class TestUpdatePaymentTypes(unittest.TestCase):
-#     def test_update_payment_types(self):
-#         # Create a sample DataFrame with some London as a Location
-#         df = pd.DataFrame({
-#             'date_time': ['2022-05-09 13:00:00'],
-#             'location': ['London'],
-#             'transaction_total': [2.40],
-#             'payment_type': ['CARD']
-#         })
-
-#         # Set up a mock cursor object that returns location IDs
-#         mock_cursor = MagicMock()
-#         mock_cursor.fetchone.side_effect = [(1,), None]
-#         # It will mock the insert, and will return 1 as the location already exists in the DB
-
-#         # Call the function to get the actual result
-#         actual_result = update_payment_types(df, mock_cursor)
-
-#         # Check that the location names have been replaced with location IDs
-#         expected_result = pd.DataFrame({
-#             'date_time': ['2022-05-09 13:00:00'],
-#             'location': ['London'],
-#             'transaction_total': [2.40],
-#             'payment_type': [1]
-#         })
-
-
-#          # Check that the shape of the DataFrames is the same
-#         self.assertEqual(actual_result.shape, expected_result.shape)
 # # [4/8] [end] --- Update Payment Types ---
 
 # #[5/8] --- Unit test for Update Orders Table ---
