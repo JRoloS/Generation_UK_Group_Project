@@ -308,4 +308,34 @@ class TestUpdateOrdersTable(unittest.TestCase):
 
 #[5/8] [End] --- Test update orders table ----
 
+
+#[6/8] Unit test for sanatise_csv_for_products
+
+from transformation import sanitise_csv_for_products
+
+class TestSanitiseCSVForProducts(unittest.TestCase):
+    def test_sanitise_csv_for_products(self):
+        with patch("builtins.print") as mock_print:
+            # Define mock data
+            raw_csv = b"2022-05-10 12:34:56,London,John Doe,ABC123,10.0,CARD,1234567890"
+            invocation_id = "12345"
+
+            # Call the function
+            actual_result = sanitise_csv_for_products(raw_csv, invocation_id)
+
+            # Check the sanitized DataFrame
+            expected_result = pd.DataFrame({
+                'date_time': ['2022-05-10 12:34:56'],
+                'location': ['London'],
+                'order': ['ABC123'],
+                'transaction_total': [10.0],
+                'payment_type': ['CARD']
+            })
+            pd.testing.assert_frame_equal(actual_result, expected_result)
+
+            # Check print statements
+            mock_print.assert_any_call(f"sanitise_csv_for_products function started.., invocation_id = {invocation_id}")
+            mock_print.assert_any_call(f"sanitise_csv_for_products function completed., invocation_id = {invocation_id}")
+
+
 ############################ END TRANSFORMATION #############################################
