@@ -85,8 +85,7 @@ This section provides information on how to customize the project to meet the sp
 ```
 docker compose up -d 
 ```
-* You should then see a docker container ready with two sub containers for the GUI for adminer(8080:8080) and for the internal PostgreSQL database(5432:5432):
-<p align="center"><img src="docker container image.png" width="175" height="175" /></p>
+* You should then see a docker container ready with two sub containers for the GUI for adminer(8080:8080) and for the internal PostgreSQL database(5432:5432).
 
 * You can then navigate to http://localhost:8080 to log in and interact with your database.
 
