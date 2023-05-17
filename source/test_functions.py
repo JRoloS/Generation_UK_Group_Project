@@ -188,42 +188,49 @@ def test_sort_time_to_postgre_format():
         mock_print.assert_any_call(f"sort_time_to_postgre_format function completed. , invocation_id = {invocation_id}")
 
 
-
 # # [2/8] --- [end] Unit test for sort_time_to_postgre_format ---------------------------------------
 
 
 # # [3/8] --- Unit test for Update Locations ---
-# from transformation import update_locations
+from transformation import update_locations
 
-# class TestUpdateLocations(unittest.TestCase):
-#     def test_update_locations(self):
-#         # Create a sample DataFrame with some London as a Location
-#         df = pd.DataFrame({
-#             'date_time': ['2022-05-09 13:00:00'],
-#             'location': ['London'],
-#             'transaction_total': [2.40],
-#             'payment_type': ['CARD']
-#         })
+from transformation import update_locations
 
-#         # Set up a mock cursor object that returns location IDs
-#         mock_cursor = MagicMock()
-#         mock_cursor.fetchone.side_effect = [(1,), None]
-#         # It will mock the insert, and will return 1 as the location already exists in the DB
+class TestUpdateLocations(unittest.TestCase):
+    def test_update_locations(self):
+        with patch("builtins.print") as mock_print:
+            # Create a sample DataFrame with London as a location
+            df = pd.DataFrame({
+                'date_time': ['2022-05-09 13:00:00'],
+                'location': ['London'],
+                'transaction_total': [2.40],
+                'payment_type': ['CARD']
+            })
 
-#         # Call the function to get the actual result
-#         actual_result = update_locations(df, mock_cursor)
+            # Set up a mock cursor object that returns location IDs
+            mock_cursor = MagicMock()
+            mock_cursor.fetchone.side_effect = [(1,), None]
+            # It will mock the insert and return 1 as the location already exists in the DB
 
-#         # Check that the location names have been replaced with location IDs
-#         expected_result = pd.DataFrame({
-#             'date_time': ['2022-05-09 13:00:00'],
-#             'location': [1],
-#             'transaction_total': [2.40],
-#             'payment_type': ['CARD']
-#         })
+            # Call the function to get the actual result
+            invocation_id = "12345"
+            actual_result = update_locations(df, mock_cursor, invocation_id)
 
+            # Check that the location names have been replaced with location IDs
+            expected_result = pd.DataFrame({
+                'date_time': ['2022-05-09 13:00:00'],
+                'location': [1],
+                'transaction_total': [2.40],
+                'payment_type': ['CARD']
+            })
 
-#          # Check that the shape of the DataFrames is the same
-#         self.assertEqual(actual_result.shape, expected_result.shape)
+            # Check that the shape of the DataFrames is the same
+            self.assertEqual(actual_result.shape, expected_result.shape)
+
+            # Check print statements
+            mock_print.assert_any_call(f"update_locations function started.., invocation_id = {invocation_id}")
+            mock_print.assert_any_call(f"update_locations function completed. invocation_id = {invocation_id}")
+
 
 # # [3/8] --- [end] Unit test for Update Locations ---
 
