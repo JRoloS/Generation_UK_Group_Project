@@ -104,6 +104,10 @@ class TestCreateRedshiftDatabaseSchema(unittest.TestCase):
 # # [2/7] ------ [end] Unit Test for create_redshift_database_schema -----------------------------------------
 
 
+# [3/7] --- Unit test for create locations db table
+from database import create_locations_db_table
+
+
 # ######################## END DATABASE #######################################
 
 
@@ -112,39 +116,45 @@ class TestCreateRedshiftDatabaseSchema(unittest.TestCase):
 # #########################   TRANSFORMATION ###################################
 
 # # [1/8] ------ TEST sanatise_csv_order_table ------------------------
-# from transformation import sanitise_csv_order_table
+from transformation import sanitise_csv_order_table
 
-# class TestSanitiseCsvOrderTable(unittest.TestCase):
+class TestSanitiseCsvOrderTable(unittest.TestCase):
+    @patch("builtins.print")
+    def test_sanitise_csv_order_table(self, mock_print):
+        # Define the raw CSV input
+        raw_csv = [
+            ['2022-05-09 13:00:00', 'London', 'John Doe', 'Americano, 1.20, Latte 2.20', 2.40, 'CARD', '1234'],
+            ['2022-05-09 13:30:00', 'Not London', 'Jane Doe', 'Tea 1.15', 1.15, 'CASH', '5678']
+        ]
 
-#     def test_sanitise_csv_order_table(self):
-#         # Define the raw CSV input
-#         raw_csv = [
-#          ['2022-05-09 13:00:00', 'London', 'John Doe', 'Americano, 1.20, Latte 2.20', 2.40, 'CARD', '1234'],
-#          ['2022-05-09 13:30:00', 'Not London', 'Jane Doe', 'Tea 1.15', 1.15, 'CASH', '5678']
-#         ]
+        # Convert the raw_csv list to a bytes-like object
+        csv_bytes = io.StringIO()
+        writer = csv.writer(csv_bytes)
+        writer.writerows(raw_csv)
+        csv_bytes.seek(0)
 
-#         # Convert the raw_csv list to a bytes-like object
-#         csv_bytes = io.StringIO()
-#         writer = csv.writer(csv_bytes)
-#         writer.writerows(raw_csv)
-#         csv_bytes.seek(0)
+        # Define the expected values
+        expected_columns = ['date_time', 'location', 'transaction_total', 'payment_type']
+        expected_data = [
+            ['2022-05-09 13:00:00', 'London', 2.40, 'CARD'],
+            ['2022-05-09 13:30:00', 'Not London', 1.15, 'CASH']
+        ]
 
-#         # Define the expected values
-#         expected_columns = ['date_time', 'location', 'transaction_total', 'payment_type']
-#         expected_data = [
-#             ['2022-05-09 13:00:00', 'London', 2.40, 'CARD'],
-#             ['2022-05-09 13:30:00', 'Not London', 1.15, 'CASH']
-#         ]
+        # Call the function to get the actual result
+        invocation_id = "12345"
+        actual_result = sanitise_csv_order_table(csv_bytes.read().encode(), invocation_id)
 
-#         # Call the function to get the actual result
-#         actual_result = sanitise_csv_order_table(csv_bytes.read().encode())
+        # Check that the column names are as expected
+        self.assertEqual(list(actual_result.columns), expected_columns)
 
-#         # Check that the column names are as expected
-#         self.assertEqual(list(actual_result.columns), expected_columns)
+        # Check that the data is as expected
+        for i, row in enumerate(actual_result.values):
+            self.assertEqual(list(row), expected_data[i])
 
-#         # Check that the data is as expected
-#         for i, row in enumerate(actual_result.values):
-#             self.assertEqual(list(row), expected_data[i])
+        # Check print statements
+        mock_print.assert_any_call(f"sanitise_csv_order_table function started.. , invocation_id = {invocation_id}")
+        mock_print.assert_any_call(f"sanitise_csv_order_table function completed. , invocation_id = {invocation_id}")
+
 # # [1/8] ------ [end] TEST sanatise_csv_order_table ------------------------
 
 # # [2/8] ---- Unit test for sort_time_to_postgre_format (We have to be sure that the expected format is YYYY-MM-DD)
