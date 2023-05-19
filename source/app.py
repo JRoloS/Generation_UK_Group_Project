@@ -48,7 +48,7 @@ def lambda_handler(event, context):
         
         #[!] This function runs all database table create functions from "database.py" and if the tables already exist then will not overwrite: 
         
-        #create_redshift_database_schema(cursor, invocation_id)
+        create_redshift_database_schema(cursor, invocation_id)
 
 #-------ETL PIPELINE BELOW--------------------------------------------------------------------------
 
