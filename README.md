@@ -226,15 +226,15 @@ To deploy changes from your current local branch into AWS you can use the follow
 ./deploy_aws_unix.sh <profile-name> # For unix systems
 ```
 
-## ETL Pipelin CloudFormation Setuup
+## ETL Pipeline CloudFormation Setuup
 
-This section will walk you through the steps required to set up the ETL pipeline environment in AWS using the provided CloudFormation template. The pipeline assumes that you already have an S3 bucket containing the CSV files that will be processed by the pipeline.
+This section will walk you through the steps required to set up the ETL pipeline environment in AWS using the provided CloudFormation template in the infra folder. The pipeline assumes that you already have an S3 bucket containing the CSV files that will be processed by the pipeline.
 
 ### **Prerequisites**
 
 Before starting, make sure you have the following:
-* An AWS account with sufficient permissions to create and manage resources.
-* The AWS Command Line Interface (CLI) installed and configured on your local machine.
+* An AWS account with sufficient permissions to create and manage resources
+* The AWS Command Line Interface (CLI) installed and configured on your local machine
 
 ### **Step 1: Clone the Repository**
 
@@ -261,7 +261,7 @@ Save the changes to the yaml file
 
 ### **Step 3: Deploy the CloudFormation Stack**
 
-In your terminal, navigate to the repository directory (if not already there).
+In your terminal, navigate to the repository directory (if not already there)
 
 Deploy the CloudFormation stack using the AWS CLI:
 
@@ -269,7 +269,7 @@ Deploy the CloudFormation stack using the AWS CLI:
 aws cloudformation create-stack --stack-name <stack_name> --template-body file://template.yaml --capabilities CAPABILITY_IAM
 ```
 
-Replace <stack_name> with a unique name for your CloudFormation stack.
+Replace <stack_name> with a unique name for your CloudFormation stack
 
 Wait for the stack creation to complete. You can monitor the progress in the AWS CloudFormation console or by running the following command:
 
@@ -277,15 +277,15 @@ Wait for the stack creation to complete. You can monitor the progress in the AWS
 aws cloudformation describe-stacks --stack-name <stack_name> --query "Stacks[0].StackStatus"
 ```
 
-Once the stack status is CREATE_COMPLETE, the environment has been successfully set up.
+Once the stack status is CREATE_COMPLETE, the environment has been successfully set up
 
 ### **Step 4: Verify Lambda Trigger**
 
-Once the CSV files are uploaded to the S3 bucket, the Lambda function will be triggered automatically for each new file created.
+Once the CSV files are uploaded to the S3 bucket, the Lambda function will be triggered automatically for each new file created
 
-You can verify the trigger by checking the AWS Lambda console or by viewing the function's logs.
+You can verify the trigger by checking the AWS Lambda console or by viewing the function's logs
 
-For more information on managing AWS CloudFormation stacks, refer to the [AWS CloudFormation documentation](https://docs.aws.amazon.com/cloudformation/index.html).
+For more information on managing AWS CloudFormation stacks, refer to the [AWS CloudFormation documentation](https://docs.aws.amazon.com/cloudformation/index.html)
 
 ## Why Adminer SQL?
 
