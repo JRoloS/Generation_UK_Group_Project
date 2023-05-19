@@ -154,79 +154,13 @@ To add a one-to-many relationship between two tables in the database, follow the
    FOREIGN KEY (customer_id)
    REFERENCES customers(customer_id);
    ```
-   
 ### **AWS Lambda Schema**
 
 The ETL will be contained within one lambda hosted within AWS. A trigger will be set to initiate the lambda whenever a new 'S3 object creation' event occurs, works through the sanitisation/transformation/normalisation stages while values are inserted into the Redshift database. Below is a visual represeantion of the lambda:
 
-<p align="center"><img src="Documentation/ba lambda diagram.png" width="475" height="275" /></p>
+<p align="center"><img src="Documentation/Final Lambda Diagram.png" width="600" height="300" /></p>
 
-## Usage
-
-This section provides instructions on how to use the project, including any dependencies or prerequisites required for the project, as well as examples and code snippets. 
-This section is designed to help users quickly get up and running with the project, and to provide guidance on how to use the project's features and functionality. 
-
-
-
-### **Navigating Directories**
-
-Here are some common commands used to navigate directories in the terminal:
-
-```
-"pwd": prints the current working directory
-"ls": lists the files and directories in the current working directory
-"cd": changes the current working directory to a new directory
-"cd ..": changes the current working directory to the parent directory of the current directory
-"mkdir": creates a new directory
-"rm": removes a file or directory
-"cp": copies a file or directory
-"mv": moves a file or directory
-"touch": creates a new file
-```
-
-
-### **Essential Git Commands**
-
-``` 
-`git clone`: Clone a repository from a remote source
-`git add`: Add changes to the staging area
-`git commit`: Commit changes to the local repository
-`git push`: Push changes to a remote repository
-`git pull`: Pull changes from a remote repository
-`git status`: Show the status of the working directory
-`git log`: Show the commit history of the repository
-`git branch`: List, create, or delete branches
-`git checkout`: Switch branches or restore working tree files
-`git merge`: Merge one or more branches into the current branch
-`git stash`: Stash changes in a dirty working directory away
-```
-
-### **Essential Docker Commands**
-
-```
-`docker build`: Build an image from a Dockerfile
-`docker run`: Run a container from an image
-`docker ps`: List running containers
-`docker stop`: Stop a running container
-`docker rm`: Remove a container
-`docker images`: List images on the local machine
-`docker rmi`: Remove an image
-`docker logs`: Print the logs of a container
-`docker exec`: Run a command inside a running container
-`docker-compose up`: Start all the services defined in a docker-compose.yml file
-```
-
-### **Executing deployment files**
-
-To deploy changes from your current local branch into AWS you can use the following steps:
-
-```
-./deploy_aws_windows.sh <profile-name> # For windows systems
-
-./deploy_aws_unix.sh <profile-name> # For unix systems
-```
-
-## ETL Pipeline CloudFormation Setuup
+## ETL Pipeline CloudFormation Setup
 
 This section will walk you through the steps required to set up the ETL pipeline environment in AWS using the provided CloudFormation template in the infra folder. The pipeline assumes that you already have an S3 bucket containing the CSV files that will be processed by the pipeline.
 
@@ -286,6 +220,67 @@ Once the CSV files are uploaded to the S3 bucket, the Lambda function will be tr
 You can verify the trigger by checking the AWS Lambda console or by viewing the function's logs
 
 For more information on managing AWS CloudFormation stacks, refer to the [AWS CloudFormation documentation](https://docs.aws.amazon.com/cloudformation/index.html)
+
+
+### **Executing deployment files**
+
+To deploy changes from your current local branch into AWS you can use the following steps:
+
+```
+./deploy_aws_windows.sh <profile-name> # For windows systems
+
+./deploy_aws_unix.sh <profile-name> # For unix systems
+```
+
+
+### **Navigating Directories**
+
+Here are some common commands used to navigate directories in the terminal:
+
+```
+"pwd": prints the current working directory
+"ls": lists the files and directories in the current working directory
+"cd": changes the current working directory to a new directory
+"cd ..": changes the current working directory to the parent directory of the current directory
+"mkdir": creates a new directory
+"rm": removes a file or directory
+"cp": copies a file or directory
+"mv": moves a file or directory
+"touch": creates a new file
+```
+
+
+### **Essential Git Commands**
+
+``` 
+`git clone`: Clone a repository from a remote source
+`git add`: Add changes to the staging area
+`git commit`: Commit changes to the local repository
+`git push`: Push changes to a remote repository
+`git pull`: Pull changes from a remote repository
+`git status`: Show the status of the working directory
+`git log`: Show the commit history of the repository
+`git branch`: List, create, or delete branches
+`git checkout`: Switch branches or restore working tree files
+`git merge`: Merge one or more branches into the current branch
+`git stash`: Stash changes in a dirty working directory away
+```
+
+### **Essential Docker Commands**
+
+```
+`docker build`: Build an image from a Dockerfile
+`docker run`: Run a container from an image
+`docker ps`: List running containers
+`docker stop`: Stop a running container
+`docker rm`: Remove a container
+`docker images`: List images on the local machine
+`docker rmi`: Remove an image
+`docker logs`: Print the logs of a container
+`docker exec`: Run a command inside a running container
+`docker-compose up`: Start all the services defined in a docker-compose.yml file
+```
+
 
 ## Why Adminer SQL?
 
