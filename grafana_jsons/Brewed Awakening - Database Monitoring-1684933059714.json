@@ -1,0 +1,1212 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "d2a48de4-4cd9-4d86-909d-e0dc31cd45e9"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 16,
+      "options": {
+        "bgColor": "#cf5e13",
+        "clockType": "24 hour",
+        "countdownSettings": {
+          "endCountdownTime": "2023-05-23T18:00:00+01:00",
+          "endText": "00:00:00"
+        },
+        "countupSettings": {
+          "beginCountupTime": "2023-05-18T18:33:09+01:00",
+          "beginText": "00:00:00"
+        },
+        "dateSettings": {
+          "dateFormat": "YYYY-MM-DD",
+          "fontSize": "20px",
+          "fontWeight": "normal",
+          "locale": "UK",
+          "showDate": false
+        },
+        "mode": "countdown",
+        "refresh": "sec",
+        "timeSettings": {
+          "fontSize": "36px",
+          "fontWeight": "normal"
+        },
+        "timezone": "Etc/GMT+0",
+        "timezoneSettings": {
+          "fontSize": "12px",
+          "fontWeight": "normal",
+          "showTimezone": false,
+          "zoneFormat": "offsetAbbv"
+        }
+      },
+      "pluginVersion": "2.1.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "d2a48de4-4cd9-4d86-909d-e0dc31cd45e9"
+          },
+          "dimensions": {},
+          "expression": "",
+          "id": "",
+          "label": "",
+          "logGroups": [
+            {
+              "accountId": "015206308301",
+              "arn": "arn:aws:logs:eu-west-1:015206308301:log-group:/aws/lambda/brewed-awakening-etl:*",
+              "name": "/aws/lambda/brewed-awakening-etl"
+            }
+          ],
+          "matchExact": true,
+          "metricEditorMode": 0,
+          "metricName": "",
+          "metricQueryType": 0,
+          "namespace": "",
+          "period": "",
+          "queryMode": "Metrics",
+          "refId": "A",
+          "region": "default",
+          "sqlExpression": "",
+          "statistic": "Average"
+        }
+      ],
+      "title": "Count-Down Until Next File Batch Upload",
+      "type": "grafana-clock-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "displayName": "Total Orders in Database",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              },
+              {
+                "color": "#EAB839",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "select COUNT(*) from orders",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-YlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/.*/",
+          "values": true
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT location_name\r\nFROM locations\r\nORDER BY location_id DESC\r\nLIMIT 1;",
+          "refId": "A"
+        }
+      ],
+      "title": "Latest Location Added to Database",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#27dcb0",
+            "mode": "fixed"
+          },
+          "displayName": "Number of Active Tables in Database",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 5
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT COUNT(*) from information_schema.tables WHERE table_schema = 'public'",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 5
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/.*/",
+          "values": true
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT product_name\r\nFROM products\r\nORDER BY product_id DESC\r\nLIMIT 1;",
+          "refId": "A"
+        }
+      ],
+      "title": "Latest Product Added to Database",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 10
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT location_name AS LOCATIONS FROM locations ORDER BY location_name",
+          "refId": "A"
+        }
+      ],
+      "title": "Unique Locations",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 4,
+        "y": 10
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT product_name FROM products ORDER BY product_name",
+          "refId": "A"
+        }
+      ],
+      "title": "Unique Products",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 8,
+        "y": 10
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT product_name FROM products WHERE product_name SIMILAR TO 'Large%';\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Large Products",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 13,
+        "y": 10
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT product_name FROM products WHERE product_name SIMILAR TO 'Regular%';",
+          "refId": "A"
+        }
+      ],
+      "title": "Regular Products",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 19,
+        "y": 10
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT product_name FROM products WHERE product_name SIMILAR TO '%Flavoured%';",
+          "refId": "A"
+        }
+      ],
+      "title": "Flavoured Lattes",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 18
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT COUNT (DISTINCT location_name) FROM locations ",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of Unique Locations",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 18
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT COUNT (DISTINCT product_name) FROM products ",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of Unique Products",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 5,
+        "x": 8,
+        "y": 18
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT COUNT(product_name) FROM products WHERE product_name SIMILAR TO 'Large%';",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of Large Products",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "purple",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 13,
+        "y": 18
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT COUNT(product_name) FROM products WHERE product_name SIMILAR TO 'Regular%';",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of Regular Products",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "super-light-blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 5,
+        "x": 19,
+        "y": 18
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT COUNT(product_name) FROM products WHERE product_name SIMILAR TO '%Flavoured%';",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of Flavoured Lattes",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 21
+      },
+      "id": 17,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT product_name FROM products WHERE product_name SIMILAR TO '%Tea%';",
+          "refId": "A"
+        }
+      ],
+      "title": "Tea Products",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 21
+      },
+      "id": 18,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT product_name FROM products WHERE product_name SIMILAR TO '%Smoothie%';",
+          "refId": "A"
+        }
+      ],
+      "title": "Smoothie Products",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 16,
+        "y": 21
+      },
+      "id": 19,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT product_name FROM products WHERE product_name SIMILAR TO '%milk%';",
+          "refId": "A"
+        }
+      ],
+      "title": "Milk Products",
+      "type": "table"
+    }
+  ],
+  "refresh": "1h",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Brewed Awakening - Database Monitoring",
+  "uid": "b80c4ca1-b38b-43bd-88be-0c8e66c3ced5",
+  "version": 19,
+  "weekStart": ""
+}
