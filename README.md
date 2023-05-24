@@ -235,13 +235,13 @@ To deploy changes from your current local branch into AWS you can use the follow
 Grafana provides valuable insights into the data processing pipeline and its performance.
 
 This Dashboard Monitors our Database
-<p align="center"><img src="Documentation\grafana database monitoring.png" width="300" height="300" /></p>
+<p align="center"><img src="Documentation\grafana database monitoring.png" width="" height="300" /></p>
 
 This Dashboard Monitors the Sales Data
-<p align="center"><img src="Documentation\grafana sales data.png" width="300" height="300" /></p>
+<p align="center"><img src="Documentation\grafana sales data.png" width="" height="300" /></p>
 
 This Dashboard Monitors the ETL Pipeline
-<p align="center"><img src="Documentation\grafana etl monitoring.png" width="300" height="300" /></p>
+<p align="center"><img src="Documentation\grafana etl monitoring.png" width="" height="300" /></p>
 
 
 ### **Navigating Directories**
