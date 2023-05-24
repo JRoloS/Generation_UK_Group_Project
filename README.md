@@ -153,11 +153,9 @@ To add a one-to-many relationship between two tables in the database, follow the
    FOREIGN KEY (customer_id)
    REFERENCES customers(customer_id);
    ```
-### **AWS Lambda Schema**
+### **Cloud Architecture**
 
-The ETL will be contained within one lambda hosted within AWS. A trigger will be set to initiate the lambda whenever a new 'S3 object creation' event occurs, works through the sanitisation/transformation/normalisation stages while values are inserted into the Redshift database. Below is a visual represeantion of the lambda:
-
-<p align="center"><img src="Documentation/Final Lambda Diagram.png" width="600" height="300" /></p>
+<p align="center"><img src="Documentation/Cloud Architecture.png"/></p>
 
 ## ETL Pipeline CloudFormation Setup
 
