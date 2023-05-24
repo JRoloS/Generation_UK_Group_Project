@@ -172,6 +172,12 @@ To add a one-to-many relationship between two tables in the database, follow the
    REFERENCES customers(customer_id);
    ```
 
+
+## DevOps
+
+We utilised DevOps best practices to help us automate our workflows by using AWS CloudFormation and GitHub Actions.
+
+
 ## ETL Pipeline CloudFormation Setup
 
 This section will walk you through the steps required to set up the ETL pipeline environment in AWS using the provided CloudFormation template in the infra folder. The pipeline assumes that you already have an S3 bucket containing the CSV files that will be processed by the pipeline.
@@ -243,6 +249,17 @@ To deploy changes from your current local branch into AWS you can use the follow
 
 ./deploy_aws_unix.sh <profile-name> # For unix systems
 ```
+
+## GitHub Actions
+
+GitHub Actions fulfill the role of automating various tasks and workflows within our repository.
+
+<p align="center"><img src="Documentation\GitHub Actions.png"/></p>
+
+
+Here are the steps to take to implement GitHub Actions in the picture below
+
+<p align="center"><img src="Documentation\GitHub Actions Workflow.png"/></p>
 
 
 ## Grafana
