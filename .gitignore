@@ -141,3 +141,7 @@ brewed-awakening-key.pem
 
 source
 !source/*.py
+
+#Ignore notebook files
+.ipynb
+tests/
