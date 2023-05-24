@@ -230,6 +230,20 @@ To deploy changes from your current local branch into AWS you can use the follow
 ```
 
 
+## Grafana
+
+Grafana provides valuable insights into the data processing pipeline and its performance.
+
+This Dashboard Monitors our Database
+<p align="center"><img src="Documentation\grafana database monitoring.png" width="300" height="300" /></p>
+
+This Dashboard Monitors the Sales Data
+<p align="center"><img src="Documentation\grafana sales data.png" width="300" height="300" /></p>
+
+This Dashboard Monitors the ETL Pipeline
+<p align="center"><img src="Documentation\grafana etl monitoring.png" width="300" height="300" /></p>
+
+
 ### **Navigating Directories**
 
 Here are some common commands used to navigate directories in the terminal:
@@ -263,6 +277,7 @@ Here are some common commands used to navigate directories in the terminal:
 `git stash`: Stash changes in a dirty working directory away
 ```
 
+
 ### **Essential Docker Commands**
 
 ```
@@ -289,6 +304,7 @@ There are several benefits to using Adminer SQL as a database management tool:
 * Customization: Adminer SQL is highly customizable and can be extended with plugins and themes. This allows users to tailor the tool to their specific needs and preferences.
 
 We preferred to use Adminer SQL for our Brewed Awakening project, over other database management tools for these reasons. Additionally, because it is open source software, it is free to use and can be customized to meet specific needs. Its user-friendly interface and support for multiple database systems make it a popular choice for developers.
+
 
 ## Authors
 
