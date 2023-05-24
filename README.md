@@ -3,7 +3,6 @@
 <p align="center"><img src="Documentation/logo.png" width="175" height="175" /></p>
 
 ## Description 
-sakdjsa
 
 Introducing the Brewed-Awakening Project - an innovative solution that will revolutionize the way Super-Cafe manages its sales data.
 
