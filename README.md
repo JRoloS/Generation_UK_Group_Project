@@ -232,16 +232,221 @@ To deploy changes from your current local branch into AWS you can use the follow
 
 ## Grafana
 
+This section outlines the steps involved to set-up everything from your EC2 Instance all the way to connecting your data sources to Grafana to start generating your visual reports.
+
+## EC2 Setup
+
+For setting up an AWS Virtual Machine (EC2) running Grafana you would first need to setup your team's security group.
+
+**Important** - _Nominate one person to do the setup - they will end up with the SSH key._
+
+### Security Group Setup
+
+Before creating your own EC2 instance, you will need to create a [security group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). Security groups take control of the traffic that is allowed in and out of your instance. You can apply restrictions on port ranges and IP ranges. We will be restricting `SSH` access to your IP, but open `HTTP` to the world. This is bad practice, and so you would normally be much more restrictive in terms of what you allow in and out, but for the sake and simplicity of this exercise, we won't need to worry about that.
+
+1. Go to `EC2` page by using the search bar. On the left-hand side under `Network & Security`, select `Security Groups` and then select `Create security group`.
+
+_BUT_ - When making the security group, do this:
+
+2. Use your team name e.g. `your-team-sg`
+1. Limit all Inbound access to your teams IP addresses only
+    1. For each person in your team:
+        1. Select `SSH` for `Type` and `My IP` for `Source` (to make a rule for port 22)
+        1. Select `HTTP` for `Type` and `My IP` for `Source` (to make a rule for port 80)
+
+
+
+### EC2 Instance Setup
+
+Now let's set an instance up.
+
+1. Go to EC2 and select `Launch Instance`.
+1. Step 1 - In the 'Names and tags, section Add a name for your EC2 instance ( e.g My Web Server)
+1. Step 2 - In the 'Application and OS Images' section, Select 'Amazon Linux 2023'.
+1. Step 3 - In the 'Instance type' section, select an instance type of  't2.micro'.
+1. Step 4 - In the 'Key pair' section, create new key pair, by entering a key pair name (e.g  yourname-key), the key will download automatically to you downloads folder.
+1. Step 5 - Move the key into your working directory.
+1. Step 6 - Click on Orange 'Create key pair' button.
+1. Step 7 - In the 'Network Settings' section, click the 'Edit' button on the right hand side.
+1. Step 8 - Leave the VPC as setup as is but use the Subnet dropdown to change it to the Public subnet.
+1, Step 9 - Under Auto-assign Public IP, select `Enable`.
+1. Step 10 - Under Firewall(security group), select existing security group.
+1. Step 11 - Under Firewall(security group), use the Security groups dropdown to select the security group, you created earlier (e.g your-name-sg)
+1. Step 12 - In the 'Configure storage' section, leave  as is.
+1. Step 13 - Click on the orange button on the right hand side, to 'Launch instance`.
+1. Step 14 - Navigate to `Instances` and select the `Instance ID` value of your instance.
+1. Step 15 - Wait for your instance to have an instance state of `Running` before moving on.
+This should only take about 15-30 seconds.
+
+### Accessing the Instance
+
+Your instance has now been spun up and is ready to be accessed. Let's see how we can go about getting inside it.
+
+1. On your instance summary page, select `Connect` in the top-right of the webpage.
+1. Select the `SSH Client` tab and copy the long `ssh` command under `Example:`.
+
+Now follow the below steps on your terminal (use `git bash` if on Windows).
+
+1. In the folder your downloaded key file is in, run: `chmod 400 {name-of-key}.pem`.
+1. Paste the `ssh` command you copied and hit enter.
+1. You will be asked `Are you sure you want to continue connecting (yes/no/[fingerprint])?`, type yes and hit enter.
+1. You should now be logged in!
+
+
+### Your EC2
+
+
+1. Use the most recent AWS "Amazon Linux 2023" machine image (AMI)
+1. SSH into the instance with the SSH key you downloaded. DO NOT LOSE THIS KEY!
+    1. **DO NOT** put this in any Git folder - this would be like adding a password to git, but worse, which is **VERY BAD**
+1. Then to install docker inside it you need to run this:
+
+    ```sh
+    sudo yum install docker -y
+    sudo service docker start
+    sudo usermod -a -G docker ec2-user
+    sudo chkconfig docker on
+    ```
+
+---
+
+## Grafana Docker Setup
+
+The following steps are to ensure any changes you've made in Grafana are saved when you Stop/Pause your instance and Start it again.
+
+- Connect/SSH into your EC2 Instance.
+- Ensure your Grafana Docker Image is **_not_** running. To check this, run the command:
+    - `docker ps -a`
+- If it is running, use this to stop it and remove it:
+    - `docker stop <container-id>`
+    - `docker rm <container-id>`
+- Create a docker volume by running the following command:
+    - `docker volume create grafana-storage`
+- Verify the docker volume has been created by running command:
+    - `docker volume ls`
+- Verify you can run your Grafana image/container with volume by running this command:
+
+    ```sh
+    sudo docker run -d -p 80:3000 --rm \
+        --volume grafana-storage:/var/lib/grafana grafana/grafana ;
+    ```
+
+- Check the container is running with `docker ps -a`
+- Also check the Grafana site is running by going to the Instance's public IP address (check the EC2 page)
+    - e.g <http://12.34.56.78:80> (use your IP address)
+    - You don't log in yet (See steps later for that)
+- Now go to AWS and click `Stop Instance` to stop the instance
+- From the EC2 Instance list, select your instance and click the `Actions` drop-down -> `Instance settings` -> `Edit user data`
+- In the `Edit user data` page, ensure `Modify user data as text` is selected and then copy & paste the following into the text field:
+
+```yaml
+Content-Type: multipart/mixed; boundary="//"
+MIME-Version: 1.0
+
+--//
+Content-Type: text/cloud-config; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="cloud-config.txt"
+
+#cloud-config
+cloud_final_modules:
+- [scripts-user, always]
+
+--//
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="userdata.txt"
+
+#!/bin/bash
+sudo docker run -d -p 80:3000 --rm --volume grafana-storage:/var/lib/grafana grafana/grafana
+--//--
+```
+
+- Click `Save`
+- Start your Instance again
+- Docker should now be running automatically
+- Verify this by logging back in and running `docker ps -a`
+- Also verify it by browsing to the Grafana site via the Instance's public IP address, and check the changes you made are there, e.g <http://12.34.56.78:80>
+    - You don't need to log into it yet
+
+---
+
+## Grafana setup
+
+- Browse to it by going to the Instance's public IP address (check the EC2 page)
+    - e.g <http://12.34.56.78:80> (use your IP address)
+- Log into Grafana with user `admin` and password `admin`
+- Change the admin password to a _secure_ one, and put it on your teams _private_ Slack or MS Teams channel
+
+### Setup Grafana users
+
+To create a new user login for each team member, navigate to `Server Admin --> Users --> New user` and begin creating unique users with _secure passwords_.
+
+### Connecting Grafana to Cloudwatch
+
+Just like in the earlier exercise, we need to connect a data source in order to generate some graphs and metrics.
+
+1. In Grafana, navigate to `Configuration --> Data Sources`. Select `Add data source`, search for `Cloudwatch` and select.
+1. Give it a name, or leave as default.
+1. Leave other settings as default.
+1. Set region to `eu-west-1`.
+1. Select `Save & Test`. You should see a confirmation `Data source is working`.
+
+### Creating a Lambda metric
+
+We can make graphs and metrics for our Lambda - e.g. how many time it ran, how long it took, how many errors there were.
+
+1. Create a new dashboard and add a new panel.
+1. Select `Cloudwatch` as the query type, and `Cloudwatch Metrics` as the query mode.
+1. Select `AWS Lambda` as the namespace, and `Invocations` as the metric name.
+1. Add a new Dimension. Select `Function name` as the resource and select the dimension value as your teams ETL lambda.
+1. Update the time query to be last 24 hours or 2/7 days if you need to go back that far to see data being graphed.
+
+You should be able to now see how many times your lambda has been invoked over the time elapsed configured for the time period. You can also choose different metric options to suit your needs. For example, you can select `Error` and `Duration` as the metric name, as well as different stats such as `Average`, `Sum`, `Min` and `Max`.
+
+As team, think about what kind of monitoring metrics you can establish to display on your new dashboard.
+
+### Connecting Grafana to Redshift
+
+- Install the "Amazon Redshift" plugin
+- Add a "Redshift" datasource
+- Leave the _assumed role_ blank (as it defaults to the role on EC2 instance)
+- Set default region to `eu-west-1`
+- Select the redshift cluster in "Cluster Identifier"
+- Add your team's database user and database name
+
+You can now create dashboards by using the data from your Redshift database, using SQL.
+
+As a team think about what data from Redshift you want to display, for example, revenue per day or week, number of items sold per day, number of each type of drink sold in the last week, and so on. You wil have to create the SQL for this yourselves.
+
 Grafana provides valuable insights into the data processing pipeline and its performance.
 
-This Dashboard Monitors our Database
+### Visualisation with Grafana
+
+Below are a few screenshots of the type of dashboards we were able to achieve with the data in our redshift database, as well as CloudWatch logs:
+
+1. This Dashboard Monitors our Database:
 <p align="center"><img src="Documentation\grafana database monitoring.png" width="" height="300" /></p>
 
-This Dashboard Monitors the Sales Data
+2. This Dashboard Monitors the Sales Data
 <p align="center"><img src="Documentation\grafana sales data.png" width="" height="300" /></p>
 
-This Dashboard Monitors the ETL Pipeline
+3. This Dashboard Monitors the ETL Pipeline
 <p align="center"><img src="Documentation\grafana etl monitoring.png" width="" height="300" /></p>
+
+### Setting Up Your Graphs
+
+The easiest way to replicate the graphs above would involve:
+
+- Find the ```Toggle``` drop-down menu on the far left of your home dashboard.
+- Select ```Dashboards```.
+- Select the blue ```New``` drop-down button from the far right of the screen.
+- Select ```Import```.
+- Within the ```Import JSON``` dashboard menu select ```Upload dashboard JSON file```.
+- Navigate to the project folder, into ```grafana_jsons``` and upload all three files.
+- You should no have three seperate dashboards identicle to the three above.
 
 
 ### **Navigating Directories**
