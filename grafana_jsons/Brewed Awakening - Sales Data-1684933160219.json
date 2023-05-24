@@ -1,0 +1,1078 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT\r\n  l.location_name,\r\n  COUNT(o.order_id) as num_orders\r\nFROM \r\n  locations l\r\nJOIN orders o ON o.location_id = l.location_id\r\nWHERE $__timeFilter(o.date_time)\r\nGROUP BY l.location_name\r\nORDER BY num_orders desc\r\nLIMIT 5",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 5 Locations by Number of Orders",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT\r\n  l.location_name,\r\n  COUNT(o.order_id) as num_orders\r\nFROM \r\n  locations l\r\nJOIN orders o ON o.location_id = l.location_id\r\nWHERE $__timeFilter(o.date_time)\r\nGROUP BY l.location_name\r\nORDER BY num_orders asc\r\nLIMIT 5",
+          "refId": "A"
+        }
+      ],
+      "title": "Bottom 5 Locations by Number of Orders",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "dark-red",
+                  "index": 0
+                },
+                "to": 4999
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 5000,
+                "result": {
+                  "color": "orange",
+                  "index": 1
+                },
+                "to": 9999
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 10000,
+                "result": {
+                  "color": "yellow",
+                  "index": 2
+                },
+                "to": 14999
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 15000,
+                "result": {
+                  "color": "dark-green",
+                  "index": 3
+                },
+                "to": 19999
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 20000,
+                "result": {
+                  "color": "dark-purple",
+                  "index": 4
+                },
+                "to": 50000
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.9,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT l.location_name AS \"Location\", SUM(o.transaction_total) AS \"Total Transactions\"\r\nFROM locations AS l\r\nJOIN orders AS o \r\nON l.location_id = o.location_id\r\nWHERE $__timeFilter(o.date_time)\r\nGROUP BY l.location_name\r\nORDER BY \"Total Transactions\" DESC\r\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 Locations by Sales",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "dark-red",
+                  "index": 0
+                },
+                "to": 1900
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 5000,
+                "result": {
+                  "color": "orange",
+                  "index": 1
+                },
+                "to": 9999
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 10000,
+                "result": {
+                  "color": "yellow",
+                  "index": 2
+                },
+                "to": 14999
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 15000,
+                "result": {
+                  "color": "dark-green",
+                  "index": 3
+                },
+                "to": 19999
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 1901,
+                "result": {
+                  "color": "semi-dark-red",
+                  "index": 4
+                },
+                "to": 2999
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 3000,
+                "result": {
+                  "color": "red",
+                  "index": 5
+                },
+                "to": 4999
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 5000
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 3,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.9,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "desc"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT l.location_name AS \"Location\", SUM(o.transaction_total) AS \"Total Transactions\"\r\nFROM locations AS l\r\nJOIN orders AS o \r\nON l.location_id = o.location_id\r\nWHERE $__timeFilter(o.date_time)\r\nGROUP BY l.location_name\r\nORDER BY \"Total Transactions\" ASC\r\nLIMIT 10;",
+          "refId": "A"
+        }
+      ],
+      "title": "Bottom 10 Locations by Sales",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 16,
+        "x": 0,
+        "y": 17
+      },
+      "id": 10,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.86,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "-- best selling products\r\nSELECT p.product_name, SUM(op.product_price) AS total\r\nFROM products as p\r\nJOIN orders_products AS op ON p.product_id = op.product_id\r\nJOIN orders AS o ON o.order_id = op.order_id\r\nWHERE $__timeFilter(o.date_time)\r\nGROUP BY p.product_name\r\nORDER BY total DESC\r\nLIMIT 5\r\n\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 5 Products by Revenue",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "dark-yellow",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 16,
+        "y": 17
+      },
+      "id": 7,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT \r\n  pmt.payment_name AS \"Payment Type Name\", \r\n  COUNT(o.order_id) AS \"Num of Sales\"\r\nFROM \r\n  payment_types AS pmt\r\nJOIN orders o ON o.payment_type_id = pmt.payment_type_id\r\nWHERE $__timeFilter(o.date_time) \r\nGROUP BY pmt.payment_name\r\n\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of Sales per Payment Type",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 90
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 100
+              },
+              {
+                "color": "#EF843C",
+                "value": 110
+              },
+              {
+                "color": "#E24D42",
+                "value": 120
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 16,
+        "x": 0,
+        "y": 23
+      },
+      "id": 9,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.88,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "none",
+        "text": {
+          "valueSize": 1
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "\r\nSELECT p.product_name, SUM(op.product_price) AS total\r\nFROM products as p\r\nJOIN orders_products AS op ON p.product_id = op.product_id\r\nJOIN orders AS o ON o.order_id = op.order_id\r\nWHERE $__timeFilter(o.date_time)\r\nGROUP BY p.product_name\r\nORDER BY total ASC\r\nLIMIT 5\r\n\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Bottom 5 Products by Revenue",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 0,
+        "y": 29
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT l.location_name AS \"Location\", SUM(o.transaction_total) AS \"Total Transactions\"\r\nFROM locations AS l\r\nJOIN orders AS o \r\nON l.location_id = o.location_id\r\nWHERE $__timeFilter(o.date_time)\r\nGROUP BY l.location_name\r\nORDER BY \"Total Transactions\" DESC;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "All Total Sales Per Location",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 7,
+        "y": 29
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "-- best selling products\r\nSELECT p.product_name, SUM(op.product_price) AS total\r\nFROM products as p\r\nJOIN orders_products AS op ON p.product_id = op.product_id\r\nJOIN orders AS o ON o.order_id = op.order_id\r\nWHERE $__timeFilter(o.date_time)\r\nGROUP BY p.product_name\r\nORDER BY total DESC\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Revenue Per Product",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "description": "This will add Large and Regular into the same count for the product",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 29
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT \r\n  CASE \r\n    WHEN p.product_name LIKE '%Large%' THEN REPLACE(p.product_name, 'Large', '')\r\n    WHEN p.product_name LIKE '%Regular%' THEN REPLACE(p.product_name, 'Regular', '')\r\n    ELSE p.product_name\r\n  END AS merged_product_name,\r\n  SUM(op.product_price) AS total\r\nFROM \r\n  products AS p\r\n  JOIN orders_products AS op ON p.product_id = op.product_id\r\n  JOIN orders AS o ON o.order_id = op.order_id\r\nWHERE \r\n  $__timeFilter(o.date_time)\r\nGROUP BY \r\n  merged_product_name\r\nORDER BY \r\n  total DESC\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Revenue Per Products (Merged Sizes)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "description": "This will join \"regular\" and \"large\" products together to get the count",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 0,
+        "y": 37
+      },
+      "id": 12,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "location_name"
+          }
+        ]
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "WITH ranked_sales AS (\r\n    SELECT\r\n        l.location_name,\r\n        CASE \r\n            WHEN p.product_name LIKE '%Large%' THEN REPLACE(p.product_name, 'Large', '')\r\n            WHEN p.product_name LIKE '%Regular%' THEN REPLACE(p.product_name, 'Regular', '')\r\n            ELSE p.product_name\r\n        END AS best_selling_product,\r\n        COUNT(*) AS times_sold,\r\n        ROW_NUMBER() OVER (PARTITION BY l.location_id ORDER BY COUNT(*) DESC) AS row_num\r\n    FROM\r\n        locations AS l\r\n        JOIN orders AS o ON o.location_id = l.location_id\r\n        JOIN orders_products AS op ON op.order_id = o.order_id\r\n        JOIN products AS p ON p.product_id = op.product_id\r\n    GROUP BY\r\n        l.location_name,\r\n        best_selling_product,\r\n        l.location_id\r\n)\r\nSELECT\r\n    location_name,\r\n    best_selling_product,\r\n    times_sold\r\nFROM\r\n    ranked_sales\r\nWHERE\r\n    row_num = 1\r\nORDER BY\r\n    location_name ASC;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Best Selling Products Of All-Time by Store [Size Merged]",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-redshift-datasource",
+        "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 13,
+        "x": 11,
+        "y": 37
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-redshift-datasource",
+            "uid": "b625a9a1-4d02-4c3c-9b3b-869d2816c1bc"
+          },
+          "rawSQL": "SELECT \r\n  CASE \r\n    WHEN p.product_name LIKE '%Large%' THEN REPLACE(p.product_name, 'Large', '')\r\n    WHEN p.product_name LIKE '%Regular%' THEN REPLACE(p.product_name, 'Regular', '')\r\n    ELSE p.product_name\r\n  END AS merged_product_name,\r\n  COUNT(op.product_id) AS times_sold\r\nFROM \r\n  products AS p\r\n  JOIN orders_products AS op ON p.product_id = op.product_id\r\n  JOIN orders AS o ON o.order_id = op.order_id\r\nWHERE \r\n  $__timeFilter(o.date_time)\r\nGROUP BY \r\n  merged_product_name\r\nORDER BY \r\n  times_sold DESC\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Total  number of products sold (merged sizes)",
+      "type": "table"
+    }
+  ],
+  "refresh": "1h",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Brewed Awakening - Sales Data",
+  "uid": "e2bf8df2-4e80-4911-a9bc-2d0dd58bc228",
+  "version": 15,
+  "weekStart": ""
+}
