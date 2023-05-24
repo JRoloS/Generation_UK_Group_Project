@@ -33,6 +33,27 @@ The Brewed Awakening project was built using a combination of technologies, incl
 * CloudWatch Metrics and logs were collected from multiple sources including AWS S3 buckets. 
 * Grafana for data visualisation.
 
+### **Database Schema**
+
+<p align="center"><img src="Documentation/schema.png" width="475" height="325" /></p>
+
+### **Cloud Architecture**
+
+<p align="center"><img src="Documentation/Cloud Architecture.png"/></p>
+
+### Visualisation Results with Grafana
+
+Below are a few screenshots of the type of dashboards we were able to achieve with the data in our redshift database, as well as CloudWatch logs:
+
+1. This Dashboard Monitors our Database:
+<p align="center"><img src="Documentation\grafana database monitoring.png" width="" height="300" /></p>
+
+2. This Dashboard Monitors the Sales Data
+<p align="center"><img src="Documentation\grafana sales data.png" width="" height="300" /></p>
+
+3. This Dashboard Monitors the ETL Pipeline
+<p align="center"><img src="Documentation\grafana etl monitoring.png" width="" height="300" /></p>
+
 ## Installation Instructions
 
 This section is a step-by-step guide on how to install and set up the main platforms used for the project.
@@ -104,9 +125,6 @@ Once you've logged in to the database server, you should be able to create, edit
 * Once on the import page, click `choose files`, navigate to the same directory the local repository is located and find the `BA-Final-Schema.sql` file and upload. 
 * Lastly, click `Execute` to create all tables and foreign key constraints instantly, you should end up with the schema below.
 
-### **Database Schema**
-
-<p align="center"><img src="Documentation/schema.png" width="475" height="325" /></p>
 
 ### **Customising the Data Schema**
 
@@ -153,9 +171,6 @@ To add a one-to-many relationship between two tables in the database, follow the
    FOREIGN KEY (customer_id)
    REFERENCES customers(customer_id);
    ```
-### **Cloud Architecture**
-
-<p align="center"><img src="Documentation/Cloud Architecture.png"/></p>
 
 ## ETL Pipeline CloudFormation Setup
 
@@ -423,22 +438,10 @@ As a team think about what data from Redshift you want to display, for example, 
 
 Grafana provides valuable insights into the data processing pipeline and its performance.
 
-### Visualisation with Grafana
-
-Below are a few screenshots of the type of dashboards we were able to achieve with the data in our redshift database, as well as CloudWatch logs:
-
-1. This Dashboard Monitors our Database:
-<p align="center"><img src="Documentation\grafana database monitoring.png" width="" height="300" /></p>
-
-2. This Dashboard Monitors the Sales Data
-<p align="center"><img src="Documentation\grafana sales data.png" width="" height="300" /></p>
-
-3. This Dashboard Monitors the ETL Pipeline
-<p align="center"><img src="Documentation\grafana etl monitoring.png" width="" height="300" /></p>
 
 ### Setting Up Your Graphs
 
-The easiest way to replicate the graphs above would involve:
+The easiest way to replicate the graphs from the beginning of the our README would involve:
 
 - Find the ```Toggle``` drop-down menu on the far left of your home dashboard.
 - Select ```Dashboards```.
@@ -446,7 +449,7 @@ The easiest way to replicate the graphs above would involve:
 - Select ```Import```.
 - Within the ```Import JSON``` dashboard menu select ```Upload dashboard JSON file```.
 - Navigate to the project folder, into ```grafana_jsons``` and upload all three files.
-- You should no have three seperate dashboards identicle to the three above.
+- You should now have three seperate dashboards with all information.
 
 
 ### **Navigating Directories**
